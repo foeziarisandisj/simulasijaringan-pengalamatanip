@@ -1,0 +1,2622 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulasi IP Address - Statis vs Dinamis</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        .pulse-animation {
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+        @keyframes slideIn {
+            from { transform: translateX(-20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        .slide-in {
+            animation: slideIn 0.5s ease-out;
+        }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+        .bounce-animation {
+            animation: bounce 1s ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen font-sans">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-gray-800 mb-4">🌐 Simulasi IP Address</h1>
+            <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                Pelajari perbedaan antara IP Address Statis dan Dinamis melalui simulasi interaktif
+            </p>
+        </div>
+
+        <!-- Tab Selection -->
+        <div class="flex justify-center mb-8">
+            <div class="bg-white rounded-lg shadow-lg p-2 flex flex-wrap justify-center">
+                <button id="staticBtn" class="px-6 py-3 rounded-lg font-semibold transition-all duration-300 bg-blue-500 text-white">
+                    📍 IP Statis
+                </button>
+                <button id="dynamicBtn" class="px-6 py-3 rounded-lg font-semibold transition-all duration-300 text-gray-600 hover:bg-gray-100">
+                    🔄 IP Dinamis
+                </button>
+                <button id="subnettingBtn" class="px-6 py-3 rounded-lg font-semibold transition-all duration-300 text-gray-600 hover:bg-gray-100">
+                    🧮 Subnetting Calculator
+                </button>
+                <button id="quizBtn" class="px-6 py-3 rounded-lg font-semibold transition-all duration-300 text-gray-600 hover:bg-gray-100">
+                    📝 Quiz
+                </button>
+            </div>
+        </div>
+
+        <!-- Subnetting Calculator -->
+        <div id="subnettingSection" class="bg-white rounded-xl shadow-xl p-8 mb-8" style="display: none;">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">🧮 Kalkulator Subnetting</h2>
+            
+            <!-- Input Section -->
+            <div class="grid md:grid-cols-2 gap-8 mb-8">
+                <div class="bg-gray-50 rounded-lg p-6">
+                    <h3 class="text-lg font-semibold text-gray-700 mb-4">Input Network</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-600 mb-2">IP Address:</label>
+                            <input type="text" id="subnetIP" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="192.168.1.0" value="192.168.1.0">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-600 mb-2">Subnet Mask:</label>
+                            <select id="subnetMaskSelect" class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                                <option value="128.0.0.0">/1 - 128.0.0.0</option>
+                                <option value="192.0.0.0">/2 - 192.0.0.0</option>
+                                <option value="224.0.0.0">/3 - 224.0.0.0</option>
+                                <option value="240.0.0.0">/4 - 240.0.0.0</option>
+                                <option value="248.0.0.0">/5 - 248.0.0.0</option>
+                                <option value="252.0.0.0">/6 - 252.0.0.0</option>
+                                <option value="254.0.0.0">/7 - 254.0.0.0</option>
+                                <option value="255.0.0.0">/8 - 255.0.0.0</option>
+                                <option value="255.128.0.0">/9 - 255.128.0.0</option>
+                                <option value="255.192.0.0">/10 - 255.192.0.0</option>
+                                <option value="255.224.0.0">/11 - 255.224.0.0</option>
+                                <option value="255.240.0.0">/12 - 255.240.0.0</option>
+                                <option value="255.248.0.0">/13 - 255.248.0.0</option>
+                                <option value="255.252.0.0">/14 - 255.252.0.0</option>
+                                <option value="255.254.0.0">/15 - 255.254.0.0</option>
+                                <option value="255.255.0.0">/16 - 255.255.0.0</option>
+                                <option value="255.255.128.0">/17 - 255.255.128.0</option>
+                                <option value="255.255.192.0">/18 - 255.255.192.0</option>
+                                <option value="255.255.224.0">/19 - 255.255.224.0</option>
+                                <option value="255.255.240.0">/20 - 255.255.240.0</option>
+                                <option value="255.255.248.0">/21 - 255.255.248.0</option>
+                                <option value="255.255.252.0">/22 - 255.255.252.0</option>
+                                <option value="255.255.254.0">/23 - 255.255.254.0</option>
+                                <option value="255.255.255.0" selected>/24 - 255.255.255.0</option>
+                                <option value="255.255.255.128">/25 - 255.255.255.128</option>
+                                <option value="255.255.255.192">/26 - 255.255.255.192</option>
+                                <option value="255.255.255.224">/27 - 255.255.255.224</option>
+                                <option value="255.255.255.240">/28 - 255.255.255.240</option>
+                                <option value="255.255.255.248">/29 - 255.255.255.248</option>
+                                <option value="255.255.255.252">/30 - 255.255.255.252</option>
+                            </select>
+                        </div>
+                        <button id="calculateBtn" class="w-full bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold transition-colors">
+                            🧮 Hitung Subnet
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-50 rounded-lg p-6">
+                    <h3 class="text-lg font-semibold text-gray-700 mb-4">Hasil Perhitungan</h3>
+                    <div id="subnetResults" class="space-y-3 text-sm">
+                        <div class="text-gray-500">Masukkan IP dan subnet mask, lalu klik "Hitung Subnet"</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Network Calculation Table -->
+            <div id="networkCalculationTable" class="bg-green-50 rounded-lg p-6 mb-6" style="display: none;">
+                <h3 class="text-lg font-semibold text-green-800 mb-4">📊 Tabel Perhitungan Network</h3>
+                <div id="networkTableContent" class="space-y-4">
+                    <!-- Table will be populated by JavaScript -->
+                </div>
+            </div>
+            
+            <!-- Explanation Section -->
+            <div class="bg-blue-50 rounded-lg p-6 mb-6">
+                <h3 class="text-lg font-semibold text-blue-800 mb-4">📚 Penjelasan Subnetting</h3>
+                <div class="grid md:grid-cols-2 gap-6 text-sm text-blue-700">
+                    <div>
+                        <h4 class="font-semibold mb-2">Apa itu Subnetting?</h4>
+                        <p class="mb-3">Subnetting adalah teknik membagi satu network besar menjadi beberapa subnet yang lebih kecil untuk meningkatkan efisiensi dan keamanan jaringan.</p>
+                        
+                        <h4 class="font-semibold mb-2">Komponen Subnet:</h4>
+                        <ul class="list-disc list-inside space-y-1">
+                            <li><strong>Network Address:</strong> Alamat pertama dalam subnet</li>
+                            <li><strong>Broadcast Address:</strong> Alamat terakhir dalam subnet</li>
+                            <li><strong>Host Range:</strong> Alamat yang dapat digunakan untuk device</li>
+                            <li><strong>Subnet Mask:</strong> Menentukan bagian network dan host</li>
+                        </ul>
+                        
+                        <h4 class="font-semibold mb-2 mt-3">Keuntungan Subnetting:</h4>
+                        <ul class="list-disc list-inside space-y-1">
+                            <li>Mengurangi broadcast domain</li>
+                            <li>Meningkatkan keamanan jaringan</li>
+                            <li>Efisiensi penggunaan IP address</li>
+                            <li>Memudahkan troubleshooting</li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h4 class="font-semibold mb-2">Tabel Referensi Subnet:</h4>
+                        <div class="bg-white rounded p-3 max-h-64 overflow-y-auto">
+                            <table class="w-full text-xs font-mono">
+                                <thead class="sticky top-0 bg-white">
+                                    <tr class="border-b">
+                                        <th class="text-left py-1">CIDR</th>
+                                        <th class="text-left py-1">Subnet Mask</th>
+                                        <th class="text-right py-1">Hosts</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-xs">
+                                    <tr><td>/1</td><td>128.0.0.0</td><td class="text-right">2,147,483,646</td></tr>
+                                    <tr><td>/2</td><td>192.0.0.0</td><td class="text-right">1,073,741,822</td></tr>
+                                    <tr><td>/3</td><td>224.0.0.0</td><td class="text-right">536,870,910</td></tr>
+                                    <tr><td>/4</td><td>240.0.0.0</td><td class="text-right">268,435,454</td></tr>
+                                    <tr><td>/5</td><td>248.0.0.0</td><td class="text-right">134,217,726</td></tr>
+                                    <tr><td>/6</td><td>252.0.0.0</td><td class="text-right">67,108,862</td></tr>
+                                    <tr><td>/7</td><td>254.0.0.0</td><td class="text-right">33,554,430</td></tr>
+                                    <tr><td>/8</td><td>255.0.0.0</td><td class="text-right">16,777,214</td></tr>
+                                    <tr><td>/9</td><td>255.128.0.0</td><td class="text-right">8,388,606</td></tr>
+                                    <tr><td>/10</td><td>255.192.0.0</td><td class="text-right">4,194,302</td></tr>
+                                    <tr><td>/11</td><td>255.224.0.0</td><td class="text-right">2,097,150</td></tr>
+                                    <tr><td>/12</td><td>255.240.0.0</td><td class="text-right">1,048,574</td></tr>
+                                    <tr><td>/13</td><td>255.248.0.0</td><td class="text-right">524,286</td></tr>
+                                    <tr><td>/14</td><td>255.252.0.0</td><td class="text-right">262,142</td></tr>
+                                    <tr><td>/15</td><td>255.254.0.0</td><td class="text-right">131,070</td></tr>
+                                    <tr><td>/16</td><td>255.255.0.0</td><td class="text-right">65,534</td></tr>
+                                    <tr><td>/17</td><td>255.255.128.0</td><td class="text-right">32,766</td></tr>
+                                    <tr><td>/18</td><td>255.255.192.0</td><td class="text-right">16,382</td></tr>
+                                    <tr><td>/19</td><td>255.255.224.0</td><td class="text-right">8,190</td></tr>
+                                    <tr><td>/20</td><td>255.255.240.0</td><td class="text-right">4,094</td></tr>
+                                    <tr><td>/21</td><td>255.255.248.0</td><td class="text-right">2,046</td></tr>
+                                    <tr><td>/22</td><td>255.255.252.0</td><td class="text-right">1,022</td></tr>
+                                    <tr><td>/23</td><td>255.255.254.0</td><td class="text-right">510</td></tr>
+                                    <tr class="bg-yellow-50"><td>/24</td><td>255.255.255.0</td><td class="text-right">254</td></tr>
+                                    <tr><td>/25</td><td>255.255.255.128</td><td class="text-right">126</td></tr>
+                                    <tr><td>/26</td><td>255.255.255.192</td><td class="text-right">62</td></tr>
+                                    <tr><td>/27</td><td>255.255.255.224</td><td class="text-right">30</td></tr>
+                                    <tr><td>/28</td><td>255.255.255.240</td><td class="text-right">14</td></tr>
+                                    <tr><td>/29</td><td>255.255.255.248</td><td class="text-right">6</td></tr>
+                                    <tr><td>/30</td><td>255.255.255.252</td><td class="text-right">2</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="text-xs text-blue-600 mt-2">
+                            * Jumlah host yang dapat digunakan (dikurangi network & broadcast address)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Network Visualization -->
+        <div id="networkSection" class="bg-white rounded-xl shadow-xl p-8 mb-8">
+            <!-- Layout Toggle Button -->
+            <div class="flex justify-end mb-4">
+                <button id="layoutToggleBtn" class="bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded-lg font-semibold transition-colors flex items-center space-x-2">
+                    <span>📐</span>
+                    <span id="layoutText">Horizontal</span>
+                </button>
+            </div>
+            <div id="networkTopology" class="flex justify-center items-center mb-8">
+                <!-- Router/DHCP Server -->
+                <div id="routerContainer" class="text-center mr-12">
+                    <div id="routerIcon" class="w-20 h-20 bg-gradient-to-br from-green-400 to-green-600 rounded-lg flex items-center justify-center text-white text-2xl mb-2 mx-auto cursor-pointer hover:scale-105 transition-transform" onclick="openRouterConfig()">
+                        📡
+                    </div>
+                    <div class="text-sm font-semibold text-gray-700">Router</div>
+                    <div id="serverType" class="text-xs text-gray-500">DHCP Server</div>
+                    <div class="ip-display text-xs bg-gray-100 rounded px-2 py-1 mt-1">
+                        <span id="routerIPDisplay">192.168.1.1</span>
+                    </div>
+                    <!-- DHCP Pool Status -->
+                    <div id="dhcpPoolStatus" class="text-xs mt-2 p-2 bg-blue-50 rounded" style="display: none;">
+                        <div class="font-semibold text-blue-800">DHCP Pool:</div>
+                        <div id="poolInfo" class="text-blue-600"></div>
+                    </div>
+                </div>
+
+                <!-- Connection Lines -->
+                <div id="connectionLines" class="flex-1 relative">
+                    <div id="connectionLine" class="h-0.5 bg-gray-300 w-full"></div>
+                    <div id="dataPacket" class="absolute top-0 left-0 w-4 h-4 bg-yellow-400 rounded-full transform -translate-y-2 opacity-0 transition-all duration-1000"></div>
+                </div>
+
+                <!-- Computers -->
+                <div id="computersContainer" class="grid grid-cols-2 gap-6 ml-12">
+                    <div class="computer-node text-center" data-computer="1">
+                        <div id="pc1-icon" class="w-16 h-16 bg-gradient-to-br from-gray-400 to-gray-600 rounded-lg flex items-center justify-center text-white text-xl mb-2 mx-auto cursor-pointer hover:scale-105 transition-transform" onclick="openPcConfig(1)">
+                            💻
+                        </div>
+                        <div class="text-sm font-semibold text-gray-700">PC-1</div>
+                        <button id="power1" class="text-xs bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded mb-1 transition-colors">
+                            🔴 OFF
+                        </button>
+                        <div class="ip-display text-xs bg-gray-100 rounded px-2 py-1 mt-1">
+                            <span id="ip1">PC Off</span>
+                        </div>
+                        <div id="lease1" class="text-xs mt-1 px-2 py-1 bg-yellow-50 text-yellow-700 rounded" style="display: none;">
+                            <div class="lease-info"></div>
+                        </div>
+                        <div id="status1" class="text-xs mt-1 px-2 py-1 rounded font-semibold" style="display: none;">
+                            <span class="status-text"></span>
+                        </div>
+                    </div>
+                    <div class="computer-node text-center" data-computer="2">
+                        <div id="pc2-icon" class="w-16 h-16 bg-gradient-to-br from-gray-400 to-gray-600 rounded-lg flex items-center justify-center text-white text-xl mb-2 mx-auto cursor-pointer hover:scale-105 transition-transform" onclick="openPcConfig(2)">
+                            💻
+                        </div>
+                        <div class="text-sm font-semibold text-gray-700">PC-2</div>
+                        <button id="power2" class="text-xs bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded mb-1 transition-colors">
+                            🔴 OFF
+                        </button>
+                        <div class="ip-display text-xs bg-gray-100 rounded px-2 py-1 mt-1">
+                            <span id="ip2">PC Off</span>
+                        </div>
+                        <div id="lease2" class="text-xs mt-1 px-2 py-1 bg-yellow-50 text-yellow-700 rounded" style="display: none;">
+                            <div class="lease-info"></div>
+                        </div>
+                        <div id="status2" class="text-xs mt-1 px-2 py-1 rounded font-semibold" style="display: none;">
+                            <span class="status-text"></span>
+                        </div>
+                    </div>
+                    <div class="computer-node text-center" data-computer="3">
+                        <div id="pc3-icon" class="w-16 h-16 bg-gradient-to-br from-gray-400 to-gray-600 rounded-lg flex items-center justify-center text-white text-xl mb-2 mx-auto cursor-pointer hover:scale-105 transition-transform" onclick="openPcConfig(3)">
+                            💻
+                        </div>
+                        <div class="text-sm font-semibold text-gray-700">PC-3</div>
+                        <button id="power3" class="text-xs bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded mb-1 transition-colors">
+                            🔴 OFF
+                        </button>
+                        <div class="ip-display text-xs bg-gray-100 rounded px-2 py-1 mt-1">
+                            <span id="ip3">PC Off</span>
+                        </div>
+                        <div id="lease3" class="text-xs mt-1 px-2 py-1 bg-yellow-50 text-yellow-700 rounded" style="display: none;">
+                            <div class="lease-info"></div>
+                        </div>
+                        <div id="status3" class="text-xs mt-1 px-2 py-1 rounded font-semibold" style="display: none;">
+                            <span class="status-text"></span>
+                        </div>
+                    </div>
+                    <div class="computer-node text-center" data-computer="4">
+                        <div id="pc4-icon" class="w-16 h-16 bg-gradient-to-br from-gray-400 to-gray-600 rounded-lg flex items-center justify-center text-white text-xl mb-2 mx-auto cursor-pointer hover:scale-105 transition-transform" onclick="openPcConfig(4)">
+                            💻
+                        </div>
+                        <div class="text-sm font-semibold text-gray-700">PC-4</div>
+                        <button id="power4" class="text-xs bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded mb-1 transition-colors">
+                            🔴 OFF
+                        </button>
+                        <div class="ip-display text-xs bg-gray-100 rounded px-2 py-1 mt-1">
+                            <span id="ip4">PC Off</span>
+                        </div>
+                        <div id="lease4" class="text-xs mt-1 px-2 py-1 bg-yellow-50 text-yellow-700 rounded" style="display: none;">
+                            <div class="lease-info"></div>
+                        </div>
+                        <div id="status4" class="text-xs mt-1 px-2 py-1 rounded font-semibold" style="display: none;">
+                            <span class="status-text"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Control Buttons -->
+            <div class="flex justify-center space-x-4 mb-4">
+                <button id="checkConnectionBtn" class="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-lg font-semibold transition-colors">
+                    🔍 Cek Koneksi
+                </button>
+                <button id="resetConfigBtn" class="bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded-lg font-semibold transition-colors">
+                    🔄 Reset
+                </button>
+            </div>
+            
+            <div class="text-center text-sm text-gray-600">
+                <span id="instruction">Klik pada Router atau PC untuk mengkonfigurasi IP Address</span>
+            </div>
+        </div>
+
+        <!-- IP Configuration Popup -->
+        <div id="ipConfigPopup" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" style="display: none;">
+            <div class="bg-white rounded-xl shadow-2xl p-6 max-w-md w-full mx-4">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 id="popupTitle" class="text-xl font-bold text-gray-800">Konfigurasi IP</h3>
+                    <button onclick="closeIpConfigPopup()" class="text-gray-400 hover:text-gray-600 text-2xl font-bold">&times;</button>
+                </div>
+                
+                <div id="popupContent">
+                    <!-- Content will be populated by JavaScript -->
+                </div>
+                
+                <div class="flex justify-end space-x-3 mt-6">
+                    <button onclick="closeIpConfigPopup()" class="px-4 py-2 text-gray-600 hover:text-gray-800 font-medium">
+                        Batal
+                    </button>
+                    <button id="applyPopupConfigBtn" class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-medium">
+                        Terapkan
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Information Panel (Hidden in Quiz Mode) -->
+        <div id="informationPanel" class="grid md:grid-cols-2 gap-8">
+            <!-- Static IP Info -->
+            <div id="staticInfo" class="bg-white rounded-xl shadow-lg p-6">
+                <div class="flex items-center mb-4">
+                    <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold mr-3">📍</div>
+                    <h3 class="text-xl font-bold text-gray-800">IP Address Statis</h3>
+                </div>
+                <div class="space-y-3 text-sm text-gray-600">
+                    <div class="flex items-start">
+                        <span class="text-green-500 mr-2">✓</span>
+                        <span>IP address ditetapkan secara manual dan permanen</span>
+                    </div>
+                    <div class="flex items-start">
+                        <span class="text-green-500 mr-2">✓</span>
+                        <span>Tidak berubah meskipun komputer restart</span>
+                    </div>
+                    <div class="flex items-start">
+                        <span class="text-green-500 mr-2">✓</span>
+                        <span>Cocok untuk server dan perangkat yang membutuhkan alamat tetap</span>
+                    </div>
+                    <div class="flex items-start">
+                        <span class="text-yellow-500 mr-2">⚠</span>
+                        <span>Memerlukan konfigurasi manual pada setiap perangkat</span>
+                    </div>
+                </div>
+                <div class="mt-4 p-3 bg-blue-50 rounded-lg">
+                    <div class="text-xs font-semibold text-blue-800 mb-1">Contoh Konfigurasi:</div>
+                    <div class="text-xs text-blue-700 font-mono">
+                        IP: 192.168.1.100<br>
+                        Subnet: 255.255.255.0<br>
+                        Gateway: 192.168.1.1
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dynamic IP Info -->
+            <div id="dynamicInfo" class="bg-white rounded-xl shadow-lg p-6 opacity-50">
+                <div class="flex items-center mb-4">
+                    <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white font-bold mr-3">🔄</div>
+                    <h3 class="text-xl font-bold text-gray-800">IP Address Dinamis (DHCP)</h3>
+                </div>
+                <div class="space-y-3 text-sm text-gray-600">
+                    <div class="flex items-start">
+                        <span class="text-green-500 mr-2">✓</span>
+                        <span>IP address diberikan otomatis oleh DHCP server</span>
+                    </div>
+                    <div class="flex items-start">
+                        <span class="text-green-500 mr-2">✓</span>
+                        <span>Konfigurasi otomatis, mudah untuk pengguna</span>
+                    </div>
+                    <div class="flex items-start">
+                        <span class="text-green-500 mr-2">✓</span>
+                        <span>Efisien dalam penggunaan alamat IP</span>
+                    </div>
+                    <div class="flex items-start">
+                        <span class="text-yellow-500 mr-2">⚠</span>
+                        <span>IP address dapat berubah setiap kali terhubung</span>
+                    </div>
+                    <div class="flex items-start">
+                        <span class="text-red-500 mr-2">⚠</span>
+                        <span>Pool IP dapat habis jika terlalu banyak perangkat</span>
+                    </div>
+                </div>
+                <div class="mt-4 p-3 bg-green-50 rounded-lg">
+                    <div class="text-xs font-semibold text-green-800 mb-1">Pool DHCP:</div>
+                    <div class="text-xs text-green-700 font-mono">
+                        Range: 192.168.1.100-200<br>
+                        Lease Time: 24 jam<br>
+                        Auto-renewal: Ya
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quiz Section -->
+        <div id="quizSection" class="bg-white rounded-xl shadow-xl p-8 mb-8" style="display: none;">
+
+            <!-- Admin Panel Toggle -->
+            <div class="text-center mb-6">
+                <button id="adminToggleBtn" class="text-sm text-gray-500 hover:text-gray-700 underline transition-colors">
+                    ⚙️ Admin Panel
+                </button>
+            </div>
+
+            <!-- Admin Panel -->
+            <div id="adminPanel" class="mb-8" style="display: none;">
+                <div class="max-w-md mx-auto">
+                    <div class="bg-gradient-to-br from-orange-50 to-red-100 rounded-xl p-6 border border-orange-200">
+                        <div class="text-center mb-4">
+                            <div class="text-4xl mb-2">👨‍💼</div>
+                            <h3 class="text-xl font-bold text-gray-800">Admin Panel</h3>
+                        </div>
+                        
+                        <!-- Admin Login -->
+                        <div id="adminLogin" class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Password Admin:</label>
+                                <input type="password" id="adminPasswordInput" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-center" placeholder="Masukkan password admin">
+                            </div>
+                            <button id="adminLoginBtn" class="w-full bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg font-semibold transition-colors">
+                                🔓 Login Admin
+                            </button>
+                            <div id="adminLoginError" class="text-red-600 text-sm text-center" style="display: none;"></div>
+                        </div>
+
+                        <!-- Admin Controls -->
+                        <div id="adminControls" style="display: none;">
+                            <div class="space-y-4">
+                                <div class="bg-white rounded-lg p-4 border">
+                                    <h4 class="font-semibold text-gray-800 mb-3">🔑 Ubah Password Quiz</h4>
+                                    <div class="space-y-3">
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-1">Password Quiz Saat Ini:</label>
+                                            <div class="px-3 py-2 bg-gray-100 rounded border text-sm font-mono" id="currentQuizPassword">semogasukses</div>
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-1">Password Quiz Baru:</label>
+                                            <input type="text" id="newQuizPassword" class="w-full px-3 py-2 border border-gray-300 rounded" placeholder="Masukkan password baru">
+                                        </div>
+                                        <button id="updatePasswordBtn" class="w-full bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded font-semibold transition-colors">
+                                            ✅ Update Password
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="bg-white rounded-lg p-4 border">
+                                    <h4 class="font-semibold text-gray-800 mb-3">📊 Statistik Quiz</h4>
+                                    <div class="grid grid-cols-2 gap-3 text-sm">
+                                        <div class="bg-blue-50 rounded p-2 text-center">
+                                            <div class="font-bold text-blue-600" id="totalAttempts">0</div>
+                                            <div class="text-blue-700">Total Attempts</div>
+                                        </div>
+                                        <div class="bg-green-50 rounded p-2 text-center">
+                                            <div class="font-bold text-green-600" id="averageScore">0%</div>
+                                            <div class="text-green-700">Average Score</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="flex space-x-2">
+                                    <button id="resetQuizBtn" class="flex-1 bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded font-semibold transition-colors">
+                                        🔄 Reset Quiz
+                                    </button>
+                                    <button id="adminLogoutBtn" class="flex-1 bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded font-semibold transition-colors">
+                                        🚪 Logout
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Password Entry -->
+            <div id="passwordEntry" class="text-center">
+                <div class="max-w-md mx-auto">
+                    <div class="bg-gradient-to-br from-blue-50 to-indigo-100 rounded-xl p-8 border border-blue-200">
+                        <div class="text-6xl mb-4">🔒</div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-4">Quiz Terproteksi</h3>
+                        <p class="text-gray-600 mb-6">Masukkan password untuk mengakses quiz jaringan dan IP addressing</p>
+                        <div class="space-y-4">
+                            <input type="password" id="quizPassword" class="w-full px-4 py-3 border border-gray-300 rounded-lg text-center text-lg" placeholder="Masukkan password quiz">
+                            <button id="enterQuizBtn" class="w-full bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold transition-colors">
+                                🚀 Mulai Quiz
+                            </button>
+                        </div>
+                        <div id="passwordError" class="text-red-600 text-sm mt-2" style="display: none;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quiz Content -->
+            <div id="quizContent" style="display: none;">
+                <!-- Quiz Header -->
+                <div class="bg-gradient-to-r from-green-50 to-blue-50 rounded-lg p-6 mb-6 border border-green-200">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-800">📝 Quiz Jaringan & IP Addressing</h3>
+                            <p class="text-gray-600">10 pertanyaan tentang instalasi jaringan dan subnetting</p>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-sm text-gray-600">Pertanyaan</div>
+                            <div class="text-2xl font-bold text-blue-600">
+                                <span id="currentQuestion">1</span> / 10
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <div class="bg-gray-200 rounded-full h-2">
+                            <div id="progressBar" class="bg-gradient-to-r from-green-400 to-blue-500 h-2 rounded-full transition-all duration-300" style="width: 10%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Question Card -->
+                <div id="questionCard" class="bg-white rounded-xl shadow-lg p-8 mb-6 border border-gray-200">
+                    <div class="mb-6">
+                        <div class="text-lg font-semibold text-gray-800 mb-4" id="questionText">
+                            Loading question...
+                        </div>
+                        <div id="questionOptions" class="space-y-3">
+                            <!-- Options will be populated by JavaScript -->
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-between items-center">
+                        <div class="text-sm text-gray-500">
+                            Pilih salah satu jawaban yang paling tepat
+                        </div>
+                        <button id="nextQuestionBtn" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold transition-colors" disabled>
+                            Selanjutnya →
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Quiz Navigation -->
+                <div class="flex justify-center">
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <div class="text-sm text-gray-600 mb-2 text-center">Navigasi Soal</div>
+                        <div id="questionNavigation" class="flex space-x-2">
+                            <!-- Navigation buttons will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quiz Results -->
+            <div id="quizResults" style="display: none;">
+                <div class="text-center">
+                    <div class="bg-gradient-to-br from-green-50 to-blue-50 rounded-xl p-8 border border-green-200">
+                        <div class="text-6xl mb-4" id="resultEmoji">🎉</div>
+                        <h3 class="text-3xl font-bold text-gray-800 mb-4">Quiz Selesai!</h3>
+                        <div class="text-6xl font-bold mb-4" id="finalScore">0%</div>
+                        <div class="text-lg text-gray-600 mb-6" id="scoreMessage">Excellent work!</div>
+                        
+                        <!-- Score Breakdown -->
+                        <div class="bg-white rounded-lg p-6 mb-6 border border-gray-200">
+                            <h4 class="text-lg font-semibold text-gray-800 mb-4">📊 Detail Hasil</h4>
+                            <div class="grid grid-cols-3 gap-4 text-center">
+                                <div class="bg-green-50 rounded-lg p-4">
+                                    <div class="text-2xl font-bold text-green-600" id="correctAnswers">0</div>
+                                    <div class="text-sm text-green-700">Benar</div>
+                                </div>
+                                <div class="bg-red-50 rounded-lg p-4">
+                                    <div class="text-2xl font-bold text-red-600" id="wrongAnswers">0</div>
+                                    <div class="text-sm text-red-700">Salah</div>
+                                </div>
+                                <div class="bg-blue-50 rounded-lg p-4">
+                                    <div class="text-2xl font-bold text-blue-600" id="totalQuestions">10</div>
+                                    <div class="text-sm text-blue-700">Total</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Performance Message -->
+                        <div class="bg-gray-50 rounded-lg p-4 mb-6">
+                            <div class="text-sm text-gray-700" id="performanceMessage">
+                                <!-- Performance message will be populated by JavaScript -->
+                            </div>
+                        </div>
+
+                        <div class="text-sm text-gray-500">
+                            Terima kasih telah mengikuti quiz! Anda tidak dapat mengulang quiz ini.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Activity Log -->
+        <div class="bg-white rounded-xl shadow-lg p-6 mt-8">
+            <h3 class="text-xl font-bold text-gray-800 mb-4">📋 Log Aktivitas</h3>
+            <div id="activityLog" class="bg-gray-50 rounded-lg p-4 h-32 overflow-y-auto text-sm font-mono">
+                <div class="text-gray-500">Simulasi siap dimulai...</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentMode = 'static';
+        let currentLayout = 'horizontal'; // 'horizontal' or 'vertical'
+        let connectedDevices = [];
+        let routerConfig = {
+            ip: '192.168.1.1',
+            subnet: '255.255.255.0',
+            dhcpStart: '192.168.1.100',
+            dhcpEnd: '192.168.1.200',
+            leaseTime: 5 // minutes
+        };
+        let pcConfigs = {};
+        let dhcpAssignedIPs = {};
+        let dhcpPool = []; // Available IP pool
+        let usedDHCPIPs = new Set(); // Track used IPs for uniqueness
+        let pcPowerStates = {1: false, 2: false, 3: false, 4: false}; // PC power states
+        let dhcpLeases = {}; // Track DHCP lease information
+        let leaseTimers = {}; // Track lease renewal timers
+
+        // Quiz System Variables
+        let quizState = {
+            isActive: false,
+            hasCompleted: false,
+            currentPassword: 'semogasukses',
+            currentQuestionIndex: 0,
+            selectedQuestions: [],
+            userAnswers: [],
+            score: 0,
+            statistics: {
+                totalAttempts: 0,
+                scores: [],
+                averageScore: 0,
+                highestScore: 0
+            }
+        };
+
+        // Admin System Variables
+        let adminState = {
+            isLoggedIn: false,
+            adminPassword: 'admin123',
+            showAdminPanel: false
+        };
+
+        // Question Bank (30 questions)
+        const questionBank = [
+            {
+                question: "Apa kepanjangan dari IP dalam konteks jaringan komputer?",
+                options: ["Internet Protocol", "Internal Program", "Information Processing", "Integrated Platform"],
+                correct: 0,
+                category: "basic"
+            },
+            {
+                question: "Berapa jumlah bit dalam alamat IPv4?",
+                options: ["16 bit", "24 bit", "32 bit", "64 bit"],
+                correct: 2,
+                category: "basic"
+            },
+            {
+                question: "Subnet mask 255.255.255.0 setara dengan notasi CIDR berapa?",
+                options: ["/16", "/24", "/25", "/30"],
+                correct: 1,
+                category: "subnetting"
+            },
+            {
+                question: "Alamat IP 192.168.1.0 termasuk dalam kelas IP yang mana?",
+                options: ["Kelas A", "Kelas B", "Kelas C", "Kelas D"],
+                correct: 2,
+                category: "basic"
+            },
+            {
+                question: "Apa fungsi utama dari DHCP server?",
+                options: ["Mengatur keamanan jaringan", "Memberikan IP address secara otomatis", "Mengelola bandwidth", "Mengatur routing"],
+                correct: 1,
+                category: "dhcp"
+            },
+            {
+                question: "Berapa jumlah host yang dapat ditampung dalam subnet /26?",
+                options: ["32 host", "62 host", "64 host", "126 host"],
+                correct: 1,
+                category: "subnetting"
+            },
+            {
+                question: "Alamat IP manakah yang merupakan alamat private?",
+                options: ["8.8.8.8", "172.16.1.1", "203.142.1.1", "74.125.224.72"],
+                correct: 1,
+                category: "basic"
+            },
+            {
+                question: "Apa yang dimaksud dengan broadcast address?",
+                options: ["Alamat pertama dalam subnet", "Alamat terakhir dalam subnet", "Alamat router", "Alamat DNS server"],
+                correct: 1,
+                category: "subnetting"
+            },
+            {
+                question: "Port berapa yang digunakan oleh DHCP server?",
+                options: ["Port 53", "Port 67", "Port 80", "Port 443"],
+                correct: 1,
+                category: "dhcp"
+            },
+            {
+                question: "Dalam subnetting, apa yang terjadi jika subnet mask diperbesar?",
+                options: ["Jumlah host bertambah", "Jumlah host berkurang", "Jumlah network berkurang", "Tidak ada perubahan"],
+                correct: 1,
+                category: "subnetting"
+            },
+            {
+                question: "Alamat IP 127.0.0.1 digunakan untuk apa?",
+                options: ["Gateway default", "Broadcast", "Loopback/localhost", "DNS server"],
+                correct: 2,
+                category: "basic"
+            },
+            {
+                question: "Berapa range alamat IP kelas A?",
+                options: ["1.0.0.0 - 126.255.255.255", "128.0.0.0 - 191.255.255.255", "192.0.0.0 - 223.255.255.255", "224.0.0.0 - 239.255.255.255"],
+                correct: 0,
+                category: "basic"
+            },
+            {
+                question: "Apa kepanjangan dari VLSM?",
+                options: ["Variable Length Subnet Mask", "Virtual Local Subnet Mask", "Very Large Subnet Mask", "Variable Link Subnet Mask"],
+                correct: 0,
+                category: "subnetting"
+            },
+            {
+                question: "Dalam konfigurasi IP statis, informasi apa saja yang harus diisi?",
+                options: ["IP address saja", "IP address dan subnet mask", "IP address, subnet mask, dan gateway", "Hanya gateway"],
+                correct: 2,
+                category: "static"
+            },
+            {
+                question: "Apa perbedaan utama antara hub dan switch?",
+                options: ["Hub bekerja di layer 3, switch di layer 2", "Hub membuat collision domain terpisah", "Switch membuat collision domain terpisah", "Tidak ada perbedaan"],
+                correct: 2,
+                category: "network"
+            },
+            {
+                question: "Berapa lama default lease time DHCP pada umumnya?",
+                options: ["1 jam", "8 jam", "24 jam", "7 hari"],
+                correct: 2,
+                category: "dhcp"
+            },
+            {
+                question: "Subnet mask 255.255.255.240 setara dengan /berapa?",
+                options: ["/26", "/27", "/28", "/29"],
+                correct: 2,
+                category: "subnetting"
+            },
+            {
+                question: "Apa yang dimaksud dengan default gateway?",
+                options: ["Server DHCP", "Alamat router untuk keluar dari network lokal", "Alamat broadcast", "Alamat DNS"],
+                correct: 1,
+                category: "basic"
+            },
+            {
+                question: "Dalam subnet 192.168.1.0/25, berapa alamat network dan broadcast?",
+                options: ["Network: 192.168.1.0, Broadcast: 192.168.1.255", "Network: 192.168.1.0, Broadcast: 192.168.1.127", "Network: 192.168.1.128, Broadcast: 192.168.1.255", "Network: 192.168.1.1, Broadcast: 192.168.1.254"],
+                correct: 1,
+                category: "subnetting"
+            },
+            {
+                question: "Apa fungsi dari ARP (Address Resolution Protocol)?",
+                options: ["Mengkonversi nama domain ke IP", "Mengkonversi IP address ke MAC address", "Mengatur routing", "Mengatur DHCP"],
+                correct: 1,
+                category: "network"
+            },
+            {
+                question: "Berapa jumlah maksimum host dalam subnet /30?",
+                options: ["2 host", "4 host", "6 host", "8 host"],
+                correct: 0,
+                category: "subnetting"
+            },
+            {
+                question: "Apa yang terjadi jika dua perangkat memiliki IP address yang sama dalam satu network?",
+                options: ["Tidak ada masalah", "IP conflict terjadi", "Otomatis berganti IP", "Koneksi menjadi lebih cepat"],
+                correct: 1,
+                category: "basic"
+            },
+            {
+                question: "Dalam instalasi jaringan, kabel UTP kategori berapa yang paling umum digunakan?",
+                options: ["Cat 3", "Cat 5", "Cat 5e", "Cat 7"],
+                correct: 2,
+                category: "network"
+            },
+            {
+                question: "Apa kepanjangan dari DNS?",
+                options: ["Domain Name System", "Dynamic Network Service", "Data Network Security", "Digital Name Server"],
+                correct: 0,
+                category: "basic"
+            },
+            {
+                question: "Berapa jumlah network yang dapat dibuat dari IP kelas C dengan subnet /26?",
+                options: ["2 network", "4 network", "6 network", "8 network"],
+                correct: 1,
+                category: "subnetting"
+            },
+            {
+                question: "Apa yang dimaksud dengan APIPA (Automatic Private IP Addressing)?",
+                options: ["IP yang diberikan oleh DHCP", "IP yang dikonfigurasi manual", "IP otomatis ketika DHCP tidak tersedia", "IP untuk server"],
+                correct: 2,
+                category: "dhcp"
+            },
+            {
+                question: "Dalam topologi jaringan, apa kelebihan topologi star?",
+                options: ["Hemat kabel", "Jika satu node rusak, network tetap berjalan", "Tidak perlu hub/switch", "Kecepatan paling tinggi"],
+                correct: 1,
+                category: "network"
+            },
+            {
+                question: "Apa fungsi dari subnet mask?",
+                options: ["Mengatur kecepatan jaringan", "Membedakan bagian network dan host dari IP address", "Mengatur keamanan", "Mengatur protokol"],
+                correct: 1,
+                category: "subnetting"
+            },
+            {
+                question: "Berapa range port yang digunakan untuk aplikasi well-known services?",
+                options: ["0-1023", "1024-49151", "49152-65535", "1-100"],
+                correct: 0,
+                category: "network"
+            },
+            {
+                question: "Dalam DHCP, apa yang dimaksud dengan DHCP reservation?",
+                options: ["Menyimpan konfigurasi DHCP", "Memberikan IP tetap untuk MAC address tertentu", "Membatasi jumlah client", "Mengatur lease time"],
+                correct: 1,
+                category: "dhcp"
+            }
+        ];
+
+        // Tab switching
+        document.getElementById('staticBtn').addEventListener('click', () => switchTab('static'));
+        document.getElementById('dynamicBtn').addEventListener('click', () => switchTab('dynamic'));
+        document.getElementById('subnettingBtn').addEventListener('click', () => switchTab('subnetting'));
+        document.getElementById('quizBtn').addEventListener('click', () => switchTab('quiz'));
+
+        function switchTab(tab) {
+            // Check if quiz is active and prevent switching
+            if (quizState.isActive && tab !== 'quiz') {
+                alert('Quiz sedang berlangsung! Selesaikan quiz terlebih dahulu atau refresh halaman untuk keluar.');
+                return;
+            }
+            
+            // Update button styles
+            const staticBtn = document.getElementById('staticBtn');
+            const dynamicBtn = document.getElementById('dynamicBtn');
+            const subnettingBtn = document.getElementById('subnettingBtn');
+            const quizBtn = document.getElementById('quizBtn');
+            const networkSection = document.getElementById('networkSection');
+            const subnettingSection = document.getElementById('subnettingSection');
+            const quizSection = document.getElementById('quizSection');
+            
+            // Reset all buttons
+            staticBtn.className = 'px-6 py-3 rounded-lg font-semibold transition-all duration-300 text-gray-600 hover:bg-gray-100';
+            dynamicBtn.className = 'px-6 py-3 rounded-lg font-semibold transition-all duration-300 text-gray-600 hover:bg-gray-100';
+            subnettingBtn.className = 'px-6 py-3 rounded-lg font-semibold transition-all duration-300 text-gray-600 hover:bg-gray-100';
+            quizBtn.className = 'px-6 py-3 rounded-lg font-semibold transition-all duration-300 text-gray-600 hover:bg-gray-100';
+            
+            // Hide all sections
+            networkSection.style.display = 'none';
+            subnettingSection.style.display = 'none';
+            quizSection.style.display = 'none';
+            
+            if (tab === 'subnetting') {
+                subnettingBtn.className = 'px-6 py-3 rounded-lg font-semibold transition-all duration-300 bg-purple-500 text-white';
+                subnettingSection.style.display = 'block';
+            } else if (tab === 'quiz') {
+                quizBtn.className = 'px-6 py-3 rounded-lg font-semibold transition-all duration-300 bg-orange-500 text-white';
+                quizSection.style.display = 'block';
+                
+                // Hide information panel in quiz mode
+                document.getElementById('informationPanel').style.display = 'none';
+                
+                // Disable other tabs when quiz is active
+                if (quizState.isActive) {
+                    staticBtn.className = 'px-6 py-3 rounded-lg font-semibold transition-all duration-300 text-gray-400 cursor-not-allowed';
+                    dynamicBtn.className = 'px-6 py-3 rounded-lg font-semibold transition-all duration-300 text-gray-400 cursor-not-allowed';
+                    subnettingBtn.className = 'px-6 py-3 rounded-lg font-semibold transition-all duration-300 text-gray-400 cursor-not-allowed';
+                }
+            } else {
+                networkSection.style.display = 'block';
+                
+                // Show information panel in network modes
+                document.getElementById('informationPanel').style.display = 'grid';
+                
+                switchMode(tab);
+            }
+        }
+
+        function switchMode(mode) {
+            currentMode = mode;
+            
+            // Update button styles
+            const staticBtn = document.getElementById('staticBtn');
+            const dynamicBtn = document.getElementById('dynamicBtn');
+            const dhcpPoolStatus = document.getElementById('dhcpPoolStatus');
+            
+            if (mode === 'static') {
+                staticBtn.className = 'px-6 py-3 rounded-lg font-semibold transition-all duration-300 bg-blue-500 text-white';
+                dhcpPoolStatus.style.display = 'none';
+                document.getElementById('serverType').textContent = 'Static Config';
+                document.getElementById('staticInfo').classList.remove('opacity-50');
+                document.getElementById('dynamicInfo').classList.add('opacity-50');
+            } else {
+                dynamicBtn.className = 'px-6 py-3 rounded-lg font-semibold transition-all duration-300 bg-green-500 text-white';
+                dhcpPoolStatus.style.display = 'block';
+                document.getElementById('serverType').textContent = 'DHCP Server';
+                document.getElementById('staticInfo').classList.add('opacity-50');
+                document.getElementById('dynamicInfo').classList.remove('opacity-50');
+            }
+            
+            // Reset connections
+            resetAll();
+            
+            // Check for IP conflicts after mode switch
+            setTimeout(() => {
+                checkAllIPConflicts();
+            }, 100);
+            
+            addLog(`Mode switched to ${mode === 'static' ? 'Static IP' : 'Dynamic IP (DHCP)'}`);
+        }
+
+        // Control functions
+        document.getElementById('checkConnectionBtn').addEventListener('click', checkConnections);
+        document.getElementById('layoutToggleBtn').addEventListener('click', toggleLayout);
+        document.getElementById('resetConfigBtn').addEventListener('click', resetAll);
+        
+        // Close popup when clicking outside
+        document.getElementById('ipConfigPopup').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeIpConfigPopup();
+            }
+        });
+
+        // Power button event listeners
+        for (let i = 1; i <= 4; i++) {
+            document.getElementById(`power${i}`).addEventListener('click', (e) => {
+                e.stopPropagation(); // Prevent triggering PC config popup
+                togglePower(i);
+            });
+        }
+
+        function togglePower(pcNum) {
+            pcPowerStates[pcNum] = !pcPowerStates[pcNum];
+            updatePCDisplay(pcNum);
+            
+            if (pcPowerStates[pcNum]) {
+                addLog(`PC-${pcNum}: Power ON`);
+                // If DHCP mode and PC is turning on, try to get IP
+                if (currentMode === 'dynamic') {
+                    requestDHCPIP(pcNum);
+                }
+            } else {
+                addLog(`PC-${pcNum}: Power OFF`);
+                // If PC is turning off, handle IP release
+                if (currentMode === 'dynamic') {
+                    handlePowerOff(pcNum);
+                }
+                // Clear status when PC is off
+                document.getElementById(`status${pcNum}`).style.display = 'none';
+            }
+        }
+
+
+
+        function toggleLayout() {
+            currentLayout = currentLayout === 'horizontal' ? 'vertical' : 'horizontal';
+            updateTopologyLayout();
+            
+            const layoutText = document.getElementById('layoutText');
+            if (currentLayout === 'vertical') {
+                layoutText.textContent = 'Vertical';
+                addLog('Layout changed to Vertical');
+            } else {
+                layoutText.textContent = 'Horizontal';
+                addLog('Layout changed to Horizontal');
+            }
+        }
+
+        function updateTopologyLayout() {
+            const networkTopology = document.getElementById('networkTopology');
+            const routerContainer = document.getElementById('routerContainer');
+            const connectionLines = document.getElementById('connectionLines');
+            const computersContainer = document.getElementById('computersContainer');
+            const connectionLine = document.getElementById('connectionLine');
+            const dataPacket = document.getElementById('dataPacket');
+            
+            if (currentLayout === 'vertical') {
+                // Vertical layout: Router on top, PCs below
+                networkTopology.className = 'flex flex-col items-center mb-8';
+                routerContainer.className = 'text-center mb-8';
+                connectionLines.className = 'relative mb-8';
+                connectionLine.className = 'w-0.5 h-16 bg-gray-300 mx-auto';
+                computersContainer.className = 'grid grid-cols-4 gap-6';
+                
+                // Update data packet animation for vertical layout
+                dataPacket.className = 'absolute left-1/2 top-0 w-4 h-4 bg-yellow-400 rounded-full transform -translate-x-2 opacity-0 transition-all duration-1000';
+            } else {
+                // Horizontal layout: Router on left, PCs on right
+                networkTopology.className = 'flex justify-center items-center mb-8';
+                routerContainer.className = 'text-center mr-12';
+                connectionLines.className = 'flex-1 relative';
+                connectionLine.className = 'h-0.5 bg-gray-300 w-full';
+                computersContainer.className = 'grid grid-cols-2 gap-6 ml-12';
+                
+                // Update data packet animation for horizontal layout
+                dataPacket.className = 'absolute top-0 left-0 w-4 h-4 bg-yellow-400 rounded-full transform -translate-y-2 opacity-0 transition-all duration-1000';
+            }
+        }
+
+        function updatePCDisplay(pcNum) {
+            const powerBtn = document.getElementById(`power${pcNum}`);
+            const pcIcon = document.getElementById(`pc${pcNum}-icon`);
+            const ipDisplay = document.getElementById(`ip${pcNum}`);
+            const leaseDisplay = document.getElementById(`lease${pcNum}`);
+            const statusDisplay = document.getElementById(`status${pcNum}`);
+            
+            if (pcPowerStates[pcNum]) {
+                // PC is ON
+                powerBtn.textContent = '🟢 ON';
+                powerBtn.className = 'text-xs bg-green-500 hover:bg-green-600 text-white px-2 py-1 rounded mb-1 transition-colors';
+                
+                // Update icon color based on PC number
+                const colors = {
+                    1: 'from-blue-400 to-blue-600',
+                    2: 'from-purple-400 to-purple-600',
+                    3: 'from-red-400 to-red-600',
+                    4: 'from-orange-400 to-orange-600'
+                };
+                pcIcon.className = `w-16 h-16 bg-gradient-to-br ${colors[pcNum]} rounded-lg flex items-center justify-center text-white text-xl mb-2 mx-auto cursor-pointer hover:scale-105 transition-transform`;
+                
+                // Update IP display based on mode
+                if (currentMode === 'static') {
+                    const config = pcConfigs[pcNum];
+                    if (config) {
+                        ipDisplay.textContent = config.ip;
+                        ipDisplay.parentElement.className = 'ip-display text-xs bg-blue-100 rounded px-2 py-1 mt-1';
+                    } else {
+                        ipDisplay.textContent = 'Belum dikonfigurasi';
+                        ipDisplay.parentElement.className = 'ip-display text-xs bg-gray-100 rounded px-2 py-1 mt-1';
+                    }
+                } else {
+                    // DHCP mode - check if PC has existing lease
+                    const lease = dhcpLeases[pcNum];
+                    if (lease && lease.ip && lease.ip !== 'No IP address found') {
+                        // PC has existing lease, show IP immediately
+                        ipDisplay.textContent = lease.ip;
+                        ipDisplay.parentElement.className = 'ip-display text-xs bg-green-100 rounded px-2 py-1 mt-1';
+                        
+                        // Show connected status immediately
+                        statusDisplay.style.display = 'block';
+                        statusDisplay.className = 'text-xs mt-1 px-2 py-1 rounded font-semibold bg-green-100 text-green-800';
+                        statusDisplay.querySelector('.status-text').textContent = '✓ Connected';
+                        
+                        // Resume lease display
+                        updateLeaseDisplay(pcNum);
+                    } else if (!dhcpAssignedIPs[pcNum]) {
+                        ipDisplay.textContent = 'Requesting IP...';
+                        ipDisplay.parentElement.className = 'ip-display text-xs bg-yellow-100 rounded px-2 py-1 mt-1';
+                    }
+                }
+            } else {
+                // PC is OFF - Keep showing assigned IP if exists
+                powerBtn.textContent = '🔴 OFF';
+                powerBtn.className = 'text-xs bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded mb-1 transition-colors';
+                pcIcon.className = 'w-16 h-16 bg-gradient-to-br from-gray-400 to-gray-600 rounded-lg flex items-center justify-center text-white text-xl mb-2 mx-auto cursor-pointer hover:scale-105 transition-transform';
+                
+                // Keep showing IP if assigned, otherwise show "PC Off"
+                if (currentMode === 'static') {
+                    const config = pcConfigs[pcNum];
+                    if (config && config.ip) {
+                        ipDisplay.textContent = config.ip;
+                        ipDisplay.parentElement.className = 'ip-display text-xs bg-gray-100 rounded px-2 py-1 mt-1';
+                    } else {
+                        ipDisplay.textContent = 'PC Off';
+                        ipDisplay.parentElement.className = 'ip-display text-xs bg-gray-100 rounded px-2 py-1 mt-1';
+                    }
+                } else {
+                    // DHCP mode - show IP if lease exists, even if PC is OFF
+                    const lease = dhcpLeases[pcNum];
+                    if (lease && lease.ip && lease.ip !== 'No IP address found') {
+                        ipDisplay.textContent = lease.ip;
+                        ipDisplay.parentElement.className = 'ip-display text-xs bg-gray-100 rounded px-2 py-1 mt-1';
+                    } else {
+                        ipDisplay.textContent = 'PC Off';
+                        ipDisplay.parentElement.className = 'ip-display text-xs bg-gray-100 rounded px-2 py-1 mt-1';
+                    }
+                }
+                
+                // Hide status display when PC is OFF
+                statusDisplay.style.display = 'none';
+            }
+        }
+
+        function requestDHCPIP(pcNum) {
+            // Only assign IP if PC is ON
+            if (!pcPowerStates[pcNum]) return;
+            
+            // Check if PC already has a valid lease that hasn't expired
+            const existingLease = dhcpLeases[pcNum];
+            if (existingLease && existingLease.ip && existingLease.ip !== 'No IP address found') {
+                const now = new Date();
+                if (now < existingLease.expiryTime) {
+                    // Lease is still valid, reuse the same IP
+                    dhcpAssignedIPs[pcNum] = existingLease.ip;
+                    
+                    // Update display
+                    document.getElementById(`ip${pcNum}`).textContent = existingLease.ip;
+                    document.getElementById(`ip${pcNum}`).parentElement.className = 'ip-display text-xs bg-green-100 rounded px-2 py-1 mt-1';
+                    
+                    // Resume lease timer if not already running
+                    if (!leaseTimers[pcNum]) {
+                        startLeaseTimer(pcNum);
+                    }
+                    updateLeaseDisplay(pcNum);
+                    
+                    addLog(`PC-${pcNum}: Reconnected with existing lease - ${existingLease.ip} (${Math.ceil((existingLease.expiryTime - now) / 60000)} min remaining)`);
+                    
+                    // Check for IP conflicts after reusing existing lease
+                    checkAllIPConflicts();
+                    return;
+                } else {
+                    // Lease has expired, clean up old lease data
+                    const expiredIP = existingLease.ip;
+                    releaseDHCPIP(expiredIP);
+                    delete dhcpLeases[pcNum];
+                    if (leaseTimers[pcNum]) {
+                        clearTimeout(leaseTimers[pcNum]);
+                        delete leaseTimers[pcNum];
+                    }
+                    addLog(`PC-${pcNum}: Previous lease for ${expiredIP} has expired, requesting new IP`);
+                }
+            }
+            
+            // Need to get a new IP (either no previous lease or expired lease)
+            const assignedIP = getNextDHCPIP();
+            
+            if (assignedIP) {
+                dhcpAssignedIPs[pcNum] = assignedIP;
+                
+                // Create lease information
+                const leaseExpiry = new Date(Date.now() + routerConfig.leaseTime * 60 * 1000);
+                dhcpLeases[pcNum] = {
+                    ip: assignedIP,
+                    startTime: new Date(),
+                    expiryTime: leaseExpiry,
+                    renewalCount: 0
+                };
+                
+                // Update display
+                document.getElementById(`ip${pcNum}`).textContent = assignedIP;
+                document.getElementById(`ip${pcNum}`).parentElement.className = 'ip-display text-xs bg-green-100 rounded px-2 py-1 mt-1';
+                
+                // Start lease timer
+                startLeaseTimer(pcNum);
+                updateLeaseDisplay(pcNum);
+                
+                addLog(`PC-${pcNum}: New DHCP IP assigned - ${assignedIP} (Lease: ${routerConfig.leaseTime} min)`);
+                
+                // Check for IP conflicts after DHCP assignment
+                checkAllIPConflicts();
+            } else {
+                dhcpAssignedIPs[pcNum] = 'No IP address found';
+                
+                // Update display with error
+                document.getElementById(`ip${pcNum}`).textContent = 'No IP address found';
+                document.getElementById(`ip${pcNum}`).parentElement.className = 'ip-display text-xs bg-red-100 rounded px-2 py-1 mt-1';
+                
+                addLog(`PC-${pcNum}: DHCP assignment failed - IP pool exhausted`);
+            }
+        }
+
+        function startLeaseTimer(pcNum) {
+            // Clear existing timer
+            if (leaseTimers[pcNum]) {
+                clearTimeout(leaseTimers[pcNum]);
+            }
+            
+            const lease = dhcpLeases[pcNum];
+            if (!lease) return;
+            
+            const timeUntilExpiry = lease.expiryTime.getTime() - Date.now();
+            
+            leaseTimers[pcNum] = setTimeout(() => {
+                handleLeaseExpiry(pcNum);
+            }, timeUntilExpiry);
+            
+            // Update lease display every second
+            updateLeaseDisplayTimer(pcNum);
+        }
+
+        function updateLeaseDisplayTimer(pcNum) {
+            const updateDisplay = () => {
+                if (dhcpLeases[pcNum]) {
+                    updateLeaseDisplay(pcNum);
+                    setTimeout(updateDisplay, 1000);
+                }
+            };
+            updateDisplay();
+        }
+
+        function updateLeaseDisplay(pcNum) {
+            const leaseDisplay = document.getElementById(`lease${pcNum}`);
+            const lease = dhcpLeases[pcNum];
+            
+            // Only show lease display if in DHCP mode and has a valid lease
+            if (!lease || currentMode !== 'dynamic') {
+                leaseDisplay.style.display = 'none';
+                return;
+            }
+            
+            const now = new Date();
+            const timeLeft = lease.expiryTime.getTime() - now.getTime();
+            
+            if (timeLeft > 0) {
+                const minutes = Math.floor(timeLeft / 60000);
+                const seconds = Math.floor((timeLeft % 60000) / 1000);
+                
+                leaseDisplay.style.display = 'block';
+                
+                // Show different status based on PC power state
+                const pcStatus = pcPowerStates[pcNum] ? 'ON' : 'OFF';
+                leaseDisplay.querySelector('.lease-info').innerHTML = `
+                    <div class="text-xs">Lease: ${minutes}:${seconds.toString().padStart(2, '0')}</div>
+                    <div class="text-xs">PC: ${pcStatus} | Renewals: ${lease.renewalCount}</div>
+                `;
+                
+                // Change color based on time left and PC status
+                if (!pcPowerStates[pcNum]) {
+                    // PC is OFF - show gray/muted colors
+                    leaseDisplay.className = 'text-xs mt-1 px-2 py-1 bg-gray-50 text-gray-600 rounded border border-gray-200';
+                } else if (timeLeft < 60000) { // Less than 1 minute
+                    leaseDisplay.className = 'text-xs mt-1 px-2 py-1 bg-red-50 text-red-700 rounded border border-red-200';
+                } else if (timeLeft < 120000) { // Less than 2 minutes
+                    leaseDisplay.className = 'text-xs mt-1 px-2 py-1 bg-yellow-50 text-yellow-700 rounded border border-yellow-200';
+                } else {
+                    leaseDisplay.className = 'text-xs mt-1 px-2 py-1 bg-green-50 text-green-700 rounded';
+                }
+            } else {
+                leaseDisplay.style.display = 'none';
+            }
+        }
+
+        function handleLeaseExpiry(pcNum) {
+            const lease = dhcpLeases[pcNum];
+            if (!lease) return;
+            
+            if (pcPowerStates[pcNum]) {
+                // PC is still ON - auto-renew lease
+                renewDHCPLease(pcNum);
+                addLog(`PC-${pcNum}: Lease auto-renewed (PC still ON)`);
+            } else {
+                // PC is OFF - release IP back to pool and clear lease
+                const expiredIP = lease.ip;
+                releaseDHCPIP(expiredIP);
+                delete dhcpAssignedIPs[pcNum];
+                delete dhcpLeases[pcNum];
+                
+                // Clear lease timer
+                if (leaseTimers[pcNum]) {
+                    clearTimeout(leaseTimers[pcNum]);
+                    delete leaseTimers[pcNum];
+                }
+                
+                // Update PC display to show "PC Off" since lease expired
+                updatePCDisplay(pcNum);
+                
+                addLog(`PC-${pcNum}: Lease expired, IP ${expiredIP} released back to pool (PC was OFF)`);
+            }
+        }
+
+        function renewDHCPLease(pcNum) {
+            const lease = dhcpLeases[pcNum];
+            if (!lease) return;
+            
+            // Extend lease time
+            lease.expiryTime = new Date(Date.now() + routerConfig.leaseTime * 60 * 1000);
+            lease.renewalCount++;
+            
+            // Restart timer
+            startLeaseTimer(pcNum);
+            updateLeaseDisplay(pcNum);
+        }
+
+        function handlePowerOff(pcNum) {
+            // When PC powers off, we don't immediately release the IP
+            // The lease timer will handle it when it expires
+            const lease = dhcpLeases[pcNum];
+            if (lease) {
+                addLog(`PC-${pcNum}: Powered OFF, lease will expire at ${lease.expiryTime.toLocaleTimeString()}`);
+            }
+            
+            // Clear the assigned IP from active assignments but keep the lease
+            // This allows the IP to be potentially reused if PC comes back online before lease expires
+            if (dhcpAssignedIPs[pcNum]) {
+                delete dhcpAssignedIPs[pcNum];
+            }
+        }
+
+        function generateDHCPPool() {
+            dhcpPool = [];
+            usedDHCPIPs.clear();
+            
+            const startIP = routerConfig.dhcpStart.split('.');
+            const endIP = routerConfig.dhcpEnd.split('.');
+            const startNum = parseInt(startIP[3]);
+            const endNum = parseInt(endIP[3]);
+            
+            // Generate all available IPs in the range
+            for (let i = startNum; i <= endNum; i++) {
+                const ip = `${startIP[0]}.${startIP[1]}.${startIP[2]}.${i}`;
+                // Exclude router IP from DHCP pool
+                if (ip !== routerConfig.ip) {
+                    dhcpPool.push(ip);
+                }
+            }
+            
+            // Shuffle the pool for more realistic DHCP behavior
+            for (let i = dhcpPool.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [dhcpPool[i], dhcpPool[j]] = [dhcpPool[j], dhcpPool[i]];
+            }
+            
+            updateDHCPPoolDisplay();
+            addLog(`DHCP Pool generated: ${dhcpPool.length} available IPs`);
+        }
+
+        function getNextDHCPIP() {
+            // Find first available IP that's not already used
+            for (let i = 0; i < dhcpPool.length; i++) {
+                const ip = dhcpPool[i];
+                if (!usedDHCPIPs.has(ip)) {
+                    usedDHCPIPs.add(ip);
+                    updateDHCPPoolDisplay();
+                    return ip;
+                }
+            }
+            return null; // No available IPs
+        }
+
+        function releaseDHCPIP(ip) {
+            if (usedDHCPIPs.has(ip)) {
+                usedDHCPIPs.delete(ip);
+                updateDHCPPoolDisplay();
+                addLog(`DHCP IP released: ${ip}`);
+            }
+        }
+
+        function updateDHCPPoolDisplay() {
+            const poolInfo = document.getElementById('poolInfo');
+            const available = dhcpPool.length - usedDHCPIPs.size;
+            const total = dhcpPool.length;
+            
+            poolInfo.innerHTML = `
+                <div>Available: ${available}/${total}</div>
+                <div>Used: ${usedDHCPIPs.size}</div>
+                <div class="text-xs mt-1">Range: ${routerConfig.dhcpStart} - ${routerConfig.dhcpEnd}</div>
+            `;
+            
+            // Change color based on availability
+            const statusElement = document.getElementById('dhcpPoolStatus');
+            if (available === 0) {
+                statusElement.className = 'text-xs mt-2 p-2 bg-red-50 rounded border border-red-200';
+                poolInfo.className = 'text-red-600';
+            } else if (available <= total * 0.2) {
+                statusElement.className = 'text-xs mt-2 p-2 bg-yellow-50 rounded border border-yellow-200';
+                poolInfo.className = 'text-yellow-600';
+            } else {
+                statusElement.className = 'text-xs mt-2 p-2 bg-blue-50 rounded';
+                poolInfo.className = 'text-blue-600';
+            }
+        }
+
+        // Function applyConfiguration removed as it's no longer needed with popup system
+
+        function checkConnections() {
+            addLog('Checking network connectivity...');
+            
+            // First check for IP conflicts
+            checkAllIPConflicts();
+            
+            for (let i = 1; i <= 4; i++) {
+                setTimeout(() => {
+                    checkDeviceConnection(i);
+                }, i * 300);
+            }
+        }
+
+        function checkDeviceConnection(deviceNum) {
+            const statusElement = document.getElementById(`status${deviceNum}`);
+            const statusText = statusElement.querySelector('.status-text');
+            
+            let isConnected = false;
+            let reason = '';
+            
+            // First check if PC is powered on
+            if (!pcPowerStates[deviceNum]) {
+                reason = 'PC is powered OFF';
+                isConnected = false;
+            } else if (currentMode === 'static') {
+                const pcConfig = pcConfigs[deviceNum];
+                if (!pcConfig) {
+                    reason = 'No IP configured';
+                } else {
+                    // Check if IP is in same subnet as router
+                    const pcIP = pcConfig.ip;
+                    const pcSubnet = pcConfig.subnet;
+                    const gateway = pcConfig.gateway;
+                    
+                    if (!isValidIP(pcIP)) {
+                        reason = 'Invalid IP format';
+                    } else if (!isValidSubnet(pcSubnet)) {
+                        reason = 'Invalid subnet mask';
+                    } else if (gateway !== routerConfig.ip) {
+                        reason = 'Wrong gateway';
+                    } else if (pcSubnet !== routerConfig.subnet) {
+                        reason = 'Subnet mismatch';
+                    } else if (!isInSameSubnet(pcIP, routerConfig.ip, pcSubnet)) {
+                        reason = 'Different subnet';
+                    } else if (hasDuplicateIP(pcIP, deviceNum)) {
+                        reason = 'IP duplicate';
+                    } else {
+                        isConnected = true;
+                    }
+                }
+            } else {
+                // DHCP mode - check if IP was successfully assigned
+                const assignedIP = dhcpAssignedIPs[deviceNum];
+                if (!assignedIP) {
+                    reason = 'DHCP assignment failed';
+                } else if (assignedIP === 'No IP address found') {
+                    reason = 'IP pool exhausted';
+                    isConnected = false;
+                } else {
+                    isConnected = true;
+                }
+            }
+            
+            // Update status display only if not already showing IP duplicate
+            const currentStatus = statusText.textContent;
+            if (currentStatus.includes('IP duplicate')) {
+                // Don't override IP duplicate status
+                return;
+            }
+            
+            statusElement.style.display = 'block';
+            if (isConnected) {
+                statusElement.className = 'text-xs mt-1 px-2 py-1 rounded font-semibold bg-green-100 text-green-800';
+                statusText.textContent = '✓ Connected';
+                addLog(`PC-${deviceNum}: Connection OK`);
+            } else {
+                statusElement.className = 'text-xs mt-1 px-2 py-1 rounded font-semibold bg-red-100 text-red-800';
+                statusText.textContent = `✗ Disconnected (${reason})`;
+                addLog(`PC-${deviceNum}: Connection failed - ${reason}`);
+            }
+            
+            // Animation
+            statusElement.classList.add('slide-in');
+            animateDataPacket();
+        }
+
+        function validateDHCPRangeAdvanced() {
+            const routerIP = routerConfig.ip;
+            const dhcpStart = routerConfig.dhcpStart;
+            const dhcpEnd = routerConfig.dhcpEnd;
+            const subnet = routerConfig.subnet;
+            
+            // Validate IP formats
+            if (!isValidIP(routerIP) || !isValidIP(dhcpStart) || !isValidIP(dhcpEnd)) {
+                return { valid: false, message: 'Invalid IP address format' };
+            }
+            
+            // Calculate network address and broadcast address
+            const networkInfo = calculateNetworkInfo(routerIP, subnet);
+            const startNum = ipToNumber(dhcpStart);
+            const endNum = ipToNumber(dhcpEnd);
+            const networkNum = ipToNumber(networkInfo.networkAddress);
+            const broadcastNum = ipToNumber(networkInfo.broadcastAddress);
+            
+            // Check if DHCP range is within the subnet
+            if (startNum <= networkNum || startNum >= broadcastNum) {
+                return { valid: false, message: `DHCP start ${dhcpStart} is outside subnet range ${networkInfo.networkAddress}-${networkInfo.broadcastAddress}` };
+            }
+            
+            if (endNum <= networkNum || endNum >= broadcastNum) {
+                return { valid: false, message: `DHCP end ${dhcpEnd} is outside subnet range ${networkInfo.networkAddress}-${networkInfo.broadcastAddress}` };
+            }
+            
+            // Check if start is less than end
+            if (startNum >= endNum) {
+                return { valid: false, message: 'DHCP start must be less than DHCP end' };
+            }
+            
+            // Check if router IP conflicts with DHCP range
+            const routerNum = ipToNumber(routerIP);
+            if (routerNum >= startNum && routerNum <= endNum) {
+                return { valid: false, message: 'Router IP conflicts with DHCP range' };
+            }
+            
+            return { valid: true, message: 'DHCP range is valid' };
+        }
+
+        function isValidIP(ip) {
+            const regex = /^(\d{1,3}\.){3}\d{1,3}$/;
+            if (!regex.test(ip)) return false;
+            
+            const parts = ip.split('.');
+            return parts.every(part => {
+                const num = parseInt(part);
+                return num >= 0 && num <= 255;
+            });
+        }
+
+        function isValidSubnet(subnet) {
+            const validSubnets = [
+                '128.0.0.0',       // /1
+                '192.0.0.0',       // /2
+                '224.0.0.0',       // /3
+                '240.0.0.0',       // /4
+                '248.0.0.0',       // /5
+                '252.0.0.0',       // /6
+                '254.0.0.0',       // /7
+                '255.0.0.0',       // /8
+                '255.128.0.0',     // /9
+                '255.192.0.0',     // /10
+                '255.224.0.0',     // /11
+                '255.240.0.0',     // /12
+                '255.248.0.0',     // /13
+                '255.252.0.0',     // /14
+                '255.254.0.0',     // /15
+                '255.255.0.0',     // /16
+                '255.255.128.0',   // /17
+                '255.255.192.0',   // /18
+                '255.255.224.0',   // /19
+                '255.255.240.0',   // /20
+                '255.255.248.0',   // /21
+                '255.255.252.0',   // /22
+                '255.255.254.0',   // /23
+                '255.255.255.0',   // /24
+                '255.255.255.128', // /25
+                '255.255.255.192', // /26
+                '255.255.255.224', // /27
+                '255.255.255.240', // /28
+                '255.255.255.248', // /29
+                '255.255.255.252'  // /30
+            ];
+            return validSubnets.includes(subnet);
+        }
+
+        function ipToNumber(ip) {
+            const parts = ip.split('.');
+            return (parseInt(parts[0]) << 24) + (parseInt(parts[1]) << 16) + (parseInt(parts[2]) << 8) + parseInt(parts[3]);
+        }
+
+        function numberToIP(num) {
+            return [(num >>> 24) & 255, (num >>> 16) & 255, (num >>> 8) & 255, num & 255].join('.');
+        }
+
+        function getSubnetPrefix(subnetMask) {
+            const masks = {
+                '128.0.0.0': '/1',
+                '192.0.0.0': '/2',
+                '224.0.0.0': '/3',
+                '240.0.0.0': '/4',
+                '248.0.0.0': '/5',
+                '252.0.0.0': '/6',
+                '254.0.0.0': '/7',
+                '255.0.0.0': '/8',
+                '255.128.0.0': '/9',
+                '255.192.0.0': '/10',
+                '255.224.0.0': '/11',
+                '255.240.0.0': '/12',
+                '255.248.0.0': '/13',
+                '255.252.0.0': '/14',
+                '255.254.0.0': '/15',
+                '255.255.0.0': '/16',
+                '255.255.128.0': '/17',
+                '255.255.192.0': '/18',
+                '255.255.224.0': '/19',
+                '255.255.240.0': '/20',
+                '255.255.248.0': '/21',
+                '255.255.252.0': '/22',
+                '255.255.254.0': '/23',
+                '255.255.255.0': '/24',
+                '255.255.255.128': '/25',
+                '255.255.255.192': '/26',
+                '255.255.255.224': '/27',
+                '255.255.255.240': '/28',
+                '255.255.255.248': '/29',
+                '255.255.255.252': '/30'
+            };
+            return masks[subnetMask] || '/24';
+        }
+
+        function calculateNetworkInfo(ip, subnetMask) {
+            const ipNum = ipToNumber(ip);
+            const maskNum = ipToNumber(subnetMask);
+            const networkNum = ipNum & maskNum;
+            const broadcastNum = networkNum | (~maskNum >>> 0);
+            const hostBits = 32 - getSubnetPrefix(subnetMask).substring(1);
+            const totalHosts = Math.pow(2, hostBits);
+            const usableHosts = totalHosts - 2;
+            
+            return {
+                networkAddress: numberToIP(networkNum),
+                broadcastAddress: numberToIP(broadcastNum),
+                firstHost: numberToIP(networkNum + 1),
+                lastHost: numberToIP(broadcastNum - 1),
+                totalHosts: totalHosts,
+                usableHosts: usableHosts,
+                subnetMask: subnetMask,
+                prefix: getSubnetPrefix(subnetMask)
+            };
+        }
+
+        function isInSameSubnet(ip1, ip2, subnet) {
+            const ip1Num = ipToNumber(ip1);
+            const ip2Num = ipToNumber(ip2);
+            const maskNum = ipToNumber(subnet);
+            
+            return (ip1Num & maskNum) === (ip2Num & maskNum);
+        }
+
+        function hasDuplicateIP(ip, excludeDevice) {
+            // Check if IP conflicts with router IP
+            if (ip === routerConfig.ip) {
+                return true;
+            }
+            
+            // Check if IP conflicts with other PCs
+            for (let i = 1; i <= 4; i++) {
+                if (i !== excludeDevice && pcConfigs[i] && pcConfigs[i].ip === ip) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        function checkAllIPConflicts() {
+            // Check all PCs for IP conflicts
+            for (let i = 1; i <= 4; i++) {
+                if (pcPowerStates[i] && pcConfigs[i]) {
+                    const statusElement = document.getElementById(`status${i}`);
+                    const statusText = statusElement.querySelector('.status-text');
+                    
+                    if (hasDuplicateIP(pcConfigs[i].ip, i)) {
+                        statusElement.style.display = 'block';
+                        statusElement.className = 'text-xs mt-1 px-2 py-1 rounded font-semibold bg-red-100 text-red-800';
+                        statusText.textContent = '✗ Disconnected (IP duplicate)';
+                    }
+                }
+            }
+        }
+
+        function resetAll() {
+            // Clear all configurations
+            pcConfigs = {};
+            
+            // Release all DHCP IPs
+            for (const ip of Object.values(dhcpAssignedIPs)) {
+                if (ip && ip !== 'No IP address found') {
+                    releaseDHCPIP(ip);
+                }
+            }
+            dhcpAssignedIPs = {};
+            connectedDevices = [];
+            
+            // Clear all lease timers and lease data
+            for (const pcNum in leaseTimers) {
+                if (leaseTimers[pcNum]) {
+                    clearTimeout(leaseTimers[pcNum]);
+                }
+            }
+            leaseTimers = {};
+            dhcpLeases = {};
+            
+            // Reset all PC power states to OFF
+            pcPowerStates = {1: false, 2: false, 3: false, 4: false};
+            
+            // Reset router display
+            document.getElementById('routerIPDisplay').textContent = '192.168.1.1';
+            
+            // Reset displays
+            for (let i = 1; i <= 4; i++) {
+                // Update PC display to show OFF state
+                updatePCDisplay(i);
+                document.getElementById(`status${i}`).style.display = 'none';
+                document.getElementById(`lease${i}`).style.display = 'none';
+            }
+            
+            // Reset DHCP pool display
+            if (currentMode === 'dynamic') {
+                updateDHCPPoolDisplay();
+            }
+            
+            addLog('Configuration reset');
+            document.getElementById('instruction').textContent = 'Klik pada Router atau PC untuk mengkonfigurasi IP Address';
+        }
+
+        function animateDataPacket() {
+            const packet = document.getElementById('dataPacket');
+            packet.style.opacity = '1';
+            
+            if (currentLayout === 'vertical') {
+                // Vertical animation: top to bottom
+                packet.style.top = '0%';
+                packet.style.left = '50%';
+                
+                setTimeout(() => {
+                    packet.style.top = '100%';
+                }, 100);
+                
+                setTimeout(() => {
+                    packet.style.opacity = '0';
+                    packet.style.top = '0%';
+                }, 1100);
+            } else {
+                // Horizontal animation: left to right
+                packet.style.left = '0%';
+                packet.style.top = '0';
+                
+                setTimeout(() => {
+                    packet.style.left = '100%';
+                }, 100);
+                
+                setTimeout(() => {
+                    packet.style.opacity = '0';
+                    packet.style.left = '0%';
+                }, 1100);
+            }
+        }
+
+        function addLog(message) {
+            const log = document.getElementById('activityLog');
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = document.createElement('div');
+            logEntry.className = 'text-gray-700 mb-1';
+            logEntry.innerHTML = `<span class="text-gray-400">[${timestamp}]</span> ${message}`;
+            log.appendChild(logEntry);
+            log.scrollTop = log.scrollHeight;
+        }
+
+        // Computer click handlers for configuration - removed as we now use onclick directly
+
+        // Subnetting Calculator
+        document.getElementById('calculateBtn').addEventListener('click', calculateSubnet);
+
+        function calculateSubnet() {
+            const ip = document.getElementById('subnetIP').value;
+            const subnetMask = document.getElementById('subnetMaskSelect').value;
+            
+            if (!isValidIP(ip)) {
+                document.getElementById('subnetResults').innerHTML = '<div class="text-red-600">Invalid IP address format</div>';
+                document.getElementById('networkCalculationTable').style.display = 'none';
+                return;
+            }
+            
+            const networkInfo = calculateNetworkInfo(ip, subnetMask);
+            
+            // Generate network calculation table
+            generateNetworkCalculationTable(ip, networkInfo);
+            
+            document.getElementById('subnetResults').innerHTML = `
+                <div class="space-y-2">
+                    <div class="font-semibold text-gray-800">Informasi Subnet:</div>
+                    <div class="grid grid-cols-2 gap-2 text-xs">
+                        <div><strong>Network Address:</strong></div>
+                        <div class="font-mono">${networkInfo.networkAddress}</div>
+                        
+                        <div><strong>Broadcast Address:</strong></div>
+                        <div class="font-mono">${networkInfo.broadcastAddress}</div>
+                        
+                        <div><strong>First Host:</strong></div>
+                        <div class="font-mono">${networkInfo.firstHost}</div>
+                        
+                        <div><strong>Last Host:</strong></div>
+                        <div class="font-mono">${networkInfo.lastHost}</div>
+                        
+                        <div><strong>Subnet Mask:</strong></div>
+                        <div class="font-mono">${networkInfo.subnetMask}</div>
+                        
+                        <div><strong>CIDR Notation:</strong></div>
+                        <div class="font-mono">${networkInfo.networkAddress}${networkInfo.prefix}</div>
+                        
+                        <div><strong>Total Hosts:</strong></div>
+                        <div class="font-mono">${networkInfo.totalHosts}</div>
+                        
+                        <div><strong>Usable Hosts:</strong></div>
+                        <div class="font-mono">${networkInfo.usableHosts}</div>
+                    </div>
+                    
+                    <div class="mt-4 p-3 bg-blue-50 rounded">
+                        <div class="text-xs font-semibold text-blue-800 mb-1">Penjelasan:</div>
+                        <div class="text-xs text-blue-700">
+                            Network ${networkInfo.networkAddress}${networkInfo.prefix} memiliki ${networkInfo.usableHosts} alamat host yang dapat digunakan, 
+                            dari ${networkInfo.firstHost} hingga ${networkInfo.lastHost}. 
+                            ${networkInfo.networkAddress} adalah network address dan ${networkInfo.broadcastAddress} adalah broadcast address.
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function generateNetworkCalculationTable(inputIP, networkInfo) {
+            const prefix = parseInt(networkInfo.prefix.substring(1));
+            const networkTableContent = document.getElementById('networkTableContent');
+            const networkCalculationTable = document.getElementById('networkCalculationTable');
+            
+            // Calculate possible networks based on the subnet mask
+            let possibleNetworks = 1;
+            let networkSize = networkInfo.totalHosts;
+            let tableRows = '';
+            
+            // Determine how many networks are possible based on the class and subnet
+            const ipParts = inputIP.split('.');
+            const firstOctet = parseInt(ipParts[0]);
+            
+            // Determine IP class and calculate possible networks
+            let ipClass = '';
+            let classNetwork = '';
+            let baseNetworkNum = 0;
+            
+            if (firstOctet >= 1 && firstOctet <= 126) {
+                ipClass = 'A';
+                classNetwork = `${ipParts[0]}.0.0.0/8`;
+                baseNetworkNum = parseInt(ipParts[0]) << 24;
+                if (prefix > 8) {
+                    possibleNetworks = Math.pow(2, prefix - 8);
+                }
+            } else if (firstOctet >= 128 && firstOctet <= 191) {
+                ipClass = 'B';
+                classNetwork = `${ipParts[0]}.${ipParts[1]}.0.0/16`;
+                baseNetworkNum = (parseInt(ipParts[0]) << 24) + (parseInt(ipParts[1]) << 16);
+                if (prefix > 16) {
+                    possibleNetworks = Math.pow(2, prefix - 16);
+                }
+            } else if (firstOctet >= 192 && firstOctet <= 223) {
+                ipClass = 'C';
+                classNetwork = `${ipParts[0]}.${ipParts[1]}.${ipParts[2]}.0/24`;
+                baseNetworkNum = (parseInt(ipParts[0]) << 24) + (parseInt(ipParts[1]) << 16) + (parseInt(ipParts[2]) << 8);
+                if (prefix > 24) {
+                    possibleNetworks = Math.pow(2, prefix - 24);
+                }
+            }
+            
+            // Determine how many networks to display
+            let maxNetworks = possibleNetworks;
+            let showAllNetworks = true;
+            
+            // Limit display for very large numbers of networks
+            if (possibleNetworks > 256) {
+                maxNetworks = 256;
+                showAllNetworks = false;
+            } else if (possibleNetworks > 64 && ipClass === 'A') {
+                maxNetworks = 64;
+                showAllNetworks = false;
+            } else if (possibleNetworks > 32 && ipClass === 'B') {
+                maxNetworks = 32;
+                showAllNetworks = false;
+            }
+            
+            // Generate table rows for all possible networks
+            for (let i = 0; i < maxNetworks; i++) {
+                const networkNum = baseNetworkNum + (i * networkSize);
+                const broadcastNum = networkNum + networkSize - 1;
+                
+                const network = numberToIP(networkNum);
+                const broadcast = numberToIP(broadcastNum);
+                const firstHost = numberToIP(networkNum + 1);
+                const lastHost = numberToIP(broadcastNum - 1);
+                
+                // Highlight current network (the one that contains the input IP)
+                const isCurrentNetwork = network === networkInfo.networkAddress;
+                const rowClass = isCurrentNetwork ? 'bg-green-100 border-green-300' : 'border-gray-200';
+                const textClass = isCurrentNetwork ? 'font-semibold text-green-800' : 'text-gray-700';
+                
+                tableRows += `
+                    <tr class="border-b ${rowClass}">
+                        <td class="py-2 px-3 font-mono text-xs ${textClass}">${network}${networkInfo.prefix}</td>
+                        <td class="py-2 px-3 font-mono text-xs ${textClass}">${network}</td>
+                        <td class="py-2 px-3 font-mono text-xs ${textClass}">${firstHost}</td>
+                        <td class="py-2 px-3 font-mono text-xs ${textClass}">${lastHost}</td>
+                        <td class="py-2 px-3 font-mono text-xs ${textClass}">${broadcast}</td>
+                        <td class="py-2 px-3 text-center text-xs ${textClass}">${networkInfo.usableHosts}</td>
+                        ${isCurrentNetwork ? '<td class="py-2 px-3 text-center text-xs"><span class="bg-green-500 text-white px-2 py-1 rounded text-xs">Current</span></td>' : '<td class="py-2 px-3 text-center text-xs">-</td>'}
+                    </tr>
+                `;
+            }
+            
+            const showingText = showAllNetworks ? 
+                `Menampilkan semua ${possibleNetworks.toLocaleString()} network yang mungkin` : 
+                `Menampilkan ${maxNetworks} dari ${possibleNetworks.toLocaleString()} network yang mungkin`;
+            
+            networkTableContent.innerHTML = `
+                <div class="mb-4">
+                    <div class="grid grid-cols-3 gap-4 text-sm mb-4">
+                        <div class="bg-white rounded p-3 border">
+                            <div class="font-semibold text-gray-700">IP Class</div>
+                            <div class="text-lg font-bold text-blue-600">Class ${ipClass}</div>
+                            <div class="text-xs text-gray-500">${classNetwork}</div>
+                        </div>
+                        <div class="bg-white rounded p-3 border">
+                            <div class="font-semibold text-gray-700">Possible Networks</div>
+                            <div class="text-lg font-bold text-green-600">${possibleNetworks.toLocaleString()}</div>
+                            <div class="text-xs text-gray-500">dengan subnet ${networkInfo.prefix}</div>
+                        </div>
+                        <div class="bg-white rounded p-3 border">
+                            <div class="font-semibold text-gray-700">Hosts per Network</div>
+                            <div class="text-lg font-bold text-purple-600">${networkInfo.usableHosts.toLocaleString()}</div>
+                            <div class="text-xs text-gray-500">alamat host yang dapat digunakan</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <div class="text-sm font-semibold text-gray-700 mb-2">📋 Tabel Network (${showingText})</div>
+                    <div class="text-xs text-gray-600 mb-3">
+                        Network yang sedang dihitung ditandai dengan warna hijau. Setiap network memiliki ${networkInfo.usableHosts} alamat host yang dapat digunakan.
+                    </div>
+                </div>
+                
+                <div class="overflow-x-auto max-h-96 overflow-y-auto">
+                    <table class="w-full text-xs border border-gray-300 rounded">
+                        <thead class="bg-gray-100 sticky top-0">
+                            <tr>
+                                <th class="py-2 px-3 text-left font-semibold border-r">Network</th>
+                                <th class="py-2 px-3 text-left font-semibold border-r">Network Address</th>
+                                <th class="py-2 px-3 text-left font-semibold border-r">First Host</th>
+                                <th class="py-2 px-3 text-left font-semibold border-r">Last Host</th>
+                                <th class="py-2 px-3 text-left font-semibold border-r">Broadcast</th>
+                                <th class="py-2 px-3 text-center font-semibold border-r">Usable Hosts</th>
+                                <th class="py-2 px-3 text-center font-semibold">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${tableRows}
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="mt-3 text-xs text-gray-500">
+                    💡 <strong>Catatan:</strong> Network Address adalah alamat pertama yang mengidentifikasi network, 
+                    Broadcast Address adalah alamat terakhir untuk mengirim data ke semua host dalam network, 
+                    sedangkan First Host dan Last Host adalah range alamat yang dapat diberikan ke perangkat.
+                </div>
+            `;
+            
+            networkCalculationTable.style.display = 'block';
+        }
+
+
+
+        // Quiz Event Listeners
+        document.getElementById('enterQuizBtn').addEventListener('click', enterQuiz);
+        document.getElementById('nextQuestionBtn').addEventListener('click', nextQuestion);
+
+        // Admin Event Listeners
+        document.getElementById('adminToggleBtn').addEventListener('click', toggleAdminPanel);
+        document.getElementById('adminLoginBtn').addEventListener('click', adminLogin);
+        document.getElementById('updatePasswordBtn').addEventListener('click', updateQuizPassword);
+        document.getElementById('resetQuizBtn').addEventListener('click', resetQuizData);
+        document.getElementById('adminLogoutBtn').addEventListener('click', adminLogout);
+
+        // Quiz Functions
+
+        function enterQuiz() {
+            const enteredPassword = document.getElementById('quizPassword').value;
+            const errorDiv = document.getElementById('passwordError');
+            
+            if (quizState.hasCompleted) {
+                errorDiv.textContent = 'Anda sudah menyelesaikan quiz ini!';
+                errorDiv.style.display = 'block';
+                return;
+            }
+            
+            if (enteredPassword !== quizState.currentPassword) {
+                errorDiv.textContent = 'Password salah! Silakan coba lagi.';
+                errorDiv.style.display = 'block';
+                return;
+            }
+            
+            // Password correct, start quiz
+            startQuiz();
+        }
+
+        function startQuiz() {
+            quizState.isActive = true;
+            quizState.currentQuestionIndex = 0;
+            quizState.userAnswers = [];
+            quizState.score = 0;
+            
+            // Select 10 random questions from the bank
+            selectRandomQuestions();
+            
+            // Hide password entry, show quiz content
+            document.getElementById('passwordEntry').style.display = 'none';
+            document.getElementById('quizContent').style.display = 'block';
+            
+            // Initialize quiz navigation
+            initializeQuizNavigation();
+            
+            // Load first question
+            loadQuestion(0);
+            
+            // Update tab buttons to disabled state
+            updateTabButtonsForQuiz();
+            
+            addLog('Quiz started - 10 questions selected randomly from question bank');
+        }
+
+        function selectRandomQuestions() {
+            // Shuffle the question bank
+            const shuffled = [...questionBank].sort(() => 0.5 - Math.random());
+            
+            // Select first 10 questions
+            quizState.selectedQuestions = shuffled.slice(0, 10);
+            
+            // Initialize user answers array
+            quizState.userAnswers = new Array(10).fill(null);
+        }
+
+        function initializeQuizNavigation() {
+            const navigation = document.getElementById('questionNavigation');
+            navigation.innerHTML = '';
+            
+            for (let i = 0; i < 10; i++) {
+                const btn = document.createElement('button');
+                btn.className = 'w-8 h-8 rounded-full border-2 border-gray-300 text-sm font-semibold transition-colors hover:bg-gray-100';
+                btn.textContent = i + 1;
+                btn.onclick = () => loadQuestion(i);
+                navigation.appendChild(btn);
+            }
+        }
+
+        function loadQuestion(index) {
+            quizState.currentQuestionIndex = index;
+            const question = quizState.selectedQuestions[index];
+            
+            // Update question text
+            document.getElementById('questionText').textContent = `${index + 1}. ${question.question}`;
+            
+            // Update options
+            const optionsContainer = document.getElementById('questionOptions');
+            optionsContainer.innerHTML = '';
+            
+            question.options.forEach((option, optionIndex) => {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'flex items-center p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-blue-50 transition-colors';
+                
+                const isSelected = quizState.userAnswers[index] === optionIndex;
+                if (isSelected) {
+                    optionDiv.className += ' bg-blue-100 border-blue-300';
+                }
+                
+                optionDiv.innerHTML = `
+                    <input type="radio" name="question${index}" value="${optionIndex}" class="mr-3" ${isSelected ? 'checked' : ''}>
+                    <label class="flex-1 cursor-pointer">${String.fromCharCode(65 + optionIndex)}. ${option}</label>
+                `;
+                
+                optionDiv.onclick = () => selectAnswer(index, optionIndex);
+                optionsContainer.appendChild(optionDiv);
+            });
+            
+            // Update progress
+            updateQuizProgress();
+            
+            // Update navigation buttons
+            updateNavigationButtons();
+            
+            // Update next button
+            updateNextButton();
+        }
+
+        function selectAnswer(questionIndex, answerIndex) {
+            quizState.userAnswers[questionIndex] = answerIndex;
+            
+            // Update visual selection
+            const options = document.querySelectorAll(`input[name="question${questionIndex}"]`);
+            options.forEach((option, index) => {
+                const parent = option.closest('div');
+                if (index === answerIndex) {
+                    parent.className = 'flex items-center p-3 border border-blue-300 rounded-lg cursor-pointer bg-blue-100 transition-colors';
+                    option.checked = true;
+                } else {
+                    parent.className = 'flex items-center p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-blue-50 transition-colors';
+                    option.checked = false;
+                }
+            });
+            
+            // Update navigation and next button
+            updateNavigationButtons();
+            updateNextButton();
+        }
+
+        function updateQuizProgress() {
+            const progress = ((quizState.currentQuestionIndex + 1) / 10) * 100;
+            document.getElementById('progressBar').style.width = `${progress}%`;
+            document.getElementById('currentQuestion').textContent = quizState.currentQuestionIndex + 1;
+        }
+
+        function updateNavigationButtons() {
+            const buttons = document.querySelectorAll('#questionNavigation button');
+            buttons.forEach((btn, index) => {
+                btn.className = 'w-8 h-8 rounded-full border-2 text-sm font-semibold transition-colors';
+                
+                if (index === quizState.currentQuestionIndex) {
+                    // Current question
+                    btn.className += ' border-blue-500 bg-blue-500 text-white';
+                } else if (quizState.userAnswers[index] !== null) {
+                    // Answered question
+                    btn.className += ' border-green-500 bg-green-100 text-green-700 hover:bg-green-200';
+                } else {
+                    // Unanswered question
+                    btn.className += ' border-gray-300 text-gray-600 hover:bg-gray-100';
+                }
+            });
+        }
+
+        function updateNextButton() {
+            const nextBtn = document.getElementById('nextQuestionBtn');
+            const currentAnswer = quizState.userAnswers[quizState.currentQuestionIndex];
+            
+            if (currentAnswer !== null) {
+                nextBtn.disabled = false;
+                nextBtn.className = 'bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold transition-colors';
+                
+                if (quizState.currentQuestionIndex === 9) {
+                    nextBtn.textContent = 'Selesai Quiz 🏁';
+                } else {
+                    nextBtn.textContent = 'Selanjutnya →';
+                }
+            } else {
+                nextBtn.disabled = true;
+                nextBtn.className = 'bg-gray-300 text-gray-500 px-6 py-2 rounded-lg font-semibold cursor-not-allowed';
+                nextBtn.textContent = 'Pilih jawaban dulu';
+            }
+        }
+
+        function nextQuestion() {
+            if (quizState.currentQuestionIndex < 9) {
+                loadQuestion(quizState.currentQuestionIndex + 1);
+            } else {
+                finishQuiz();
+            }
+        }
+
+        function finishQuiz() {
+            // Calculate score
+            let correctAnswers = 0;
+            quizState.selectedQuestions.forEach((question, index) => {
+                if (quizState.userAnswers[index] === question.correct) {
+                    correctAnswers++;
+                }
+            });
+            
+            quizState.score = Math.round((correctAnswers / 10) * 100);
+            
+            // Update statistics
+            updateQuizStatistics(quizState.score);
+            
+            // Mark as completed
+            quizState.hasCompleted = true;
+            quizState.isActive = false;
+            
+            // Show results
+            showQuizResults(correctAnswers);
+            
+            addLog(`Quiz completed - Score: ${quizState.score}% (${correctAnswers}/10 correct)`);
+        }
+
+        function showQuizResults(correctAnswers) {
+            document.getElementById('quizContent').style.display = 'none';
+            document.getElementById('quizResults').style.display = 'block';
+            
+            // Update score display
+            document.getElementById('finalScore').textContent = `${quizState.score}%`;
+            document.getElementById('correctAnswers').textContent = correctAnswers;
+            document.getElementById('wrongAnswers').textContent = 10 - correctAnswers;
+            
+            // Update emoji and message based on score
+            const resultEmoji = document.getElementById('resultEmoji');
+            const scoreMessage = document.getElementById('scoreMessage');
+            const performanceMessage = document.getElementById('performanceMessage');
+            
+            if (quizState.score >= 90) {
+                resultEmoji.textContent = '🏆';
+                scoreMessage.textContent = 'Luar biasa! Anda menguasai materi dengan sangat baik!';
+                performanceMessage.textContent = 'Skor Anda menunjukkan pemahaman yang excellent tentang jaringan dan IP addressing. Anda siap untuk implementasi di dunia nyata!';
+            } else if (quizState.score >= 80) {
+                resultEmoji.textContent = '🎉';
+                scoreMessage.textContent = 'Bagus sekali! Pemahaman Anda sudah sangat baik!';
+                performanceMessage.textContent = 'Skor yang impressive! Anda memiliki pemahaman yang solid tentang konsep jaringan dan subnetting.';
+            } else if (quizState.score >= 70) {
+                resultEmoji.textContent = '👍';
+                scoreMessage.textContent = 'Baik! Anda sudah memahami sebagian besar materi.';
+                performanceMessage.textContent = 'Pemahaman Anda cukup baik. Dengan sedikit review pada materi yang kurang dikuasai, Anda akan semakin mahir.';
+            } else if (quizState.score >= 60) {
+                resultEmoji.textContent = '📚';
+                scoreMessage.textContent = 'Cukup baik, tapi masih perlu belajar lebih giat.';
+                performanceMessage.textContent = 'Anda sudah memahami dasar-dasarnya. Disarankan untuk mempelajari kembali materi subnetting dan konfigurasi jaringan.';
+            } else {
+                resultEmoji.textContent = '💪';
+                scoreMessage.textContent = 'Jangan menyerah! Terus belajar dan berlatih.';
+                performanceMessage.textContent = 'Masih perlu banyak belajar tentang konsep jaringan. Gunakan simulator ini untuk berlatih lebih banyak dan pelajari materi teorinya.';
+            }
+        }
+
+        function updateQuizStatistics(score) {
+            quizState.statistics.totalAttempts++;
+            quizState.statistics.scores.push(score);
+            
+            // Calculate average
+            const sum = quizState.statistics.scores.reduce((a, b) => a + b, 0);
+            quizState.statistics.averageScore = Math.round(sum / quizState.statistics.scores.length);
+            
+            // Update highest score
+            quizState.statistics.highestScore = Math.max(...quizState.statistics.scores);
+        }
+
+
+
+        function updateTabButtonsForQuiz() {
+            if (quizState.isActive) {
+                const staticBtn = document.getElementById('staticBtn');
+                const dynamicBtn = document.getElementById('dynamicBtn');
+                const subnettingBtn = document.getElementById('subnettingBtn');
+                
+                staticBtn.className = 'px-6 py-3 rounded-lg font-semibold transition-all duration-300 text-gray-400 cursor-not-allowed';
+                dynamicBtn.className = 'px-6 py-3 rounded-lg font-semibold transition-all duration-300 text-gray-400 cursor-not-allowed';
+                subnettingBtn.className = 'px-6 py-3 rounded-lg font-semibold transition-all duration-300 text-gray-400 cursor-not-allowed';
+            }
+        }
+
+        // Admin Functions
+        function toggleAdminPanel() {
+            const adminPanel = document.getElementById('adminPanel');
+            adminState.showAdminPanel = !adminState.showAdminPanel;
+            
+            if (adminState.showAdminPanel) {
+                adminPanel.style.display = 'block';
+                updateAdminStatistics();
+                addLog('Admin panel opened');
+            } else {
+                adminPanel.style.display = 'none';
+                // Reset admin login state when panel is closed
+                if (adminState.isLoggedIn) {
+                    adminLogout();
+                }
+                addLog('Admin panel closed');
+            }
+        }
+
+        function adminLogin() {
+            const enteredPassword = document.getElementById('adminPasswordInput').value;
+            const errorDiv = document.getElementById('adminLoginError');
+            
+            if (enteredPassword !== adminState.adminPassword) {
+                errorDiv.textContent = 'Password admin salah!';
+                errorDiv.style.display = 'block';
+                return;
+            }
+            
+            // Login successful
+            adminState.isLoggedIn = true;
+            document.getElementById('adminLogin').style.display = 'none';
+            document.getElementById('adminControls').style.display = 'block';
+            errorDiv.style.display = 'none';
+            
+            // Update current password display
+            document.getElementById('currentQuizPassword').textContent = quizState.currentPassword;
+            updateAdminStatistics();
+            
+            addLog('Admin logged in successfully');
+        }
+
+        function updateQuizPassword() {
+            const newPassword = document.getElementById('newQuizPassword').value.trim();
+            
+            if (!newPassword) {
+                alert('Password tidak boleh kosong!');
+                return;
+            }
+            
+            if (newPassword.length < 3) {
+                alert('Password minimal 3 karakter!');
+                return;
+            }
+            
+            // Update password in the system
+            const oldPassword = quizState.currentPassword;
+            quizState.currentPassword = newPassword;
+            
+            // Update display
+            document.getElementById('currentQuizPassword').textContent = newPassword;
+            document.getElementById('newQuizPassword').value = '';
+            
+            // Show success message
+            const updateBtn = document.getElementById('updatePasswordBtn');
+            const originalText = updateBtn.textContent;
+            updateBtn.textContent = '✅ Password Berhasil Diubah!';
+            updateBtn.className = 'w-full bg-green-600 text-white px-4 py-2 rounded font-semibold';
+            
+            setTimeout(() => {
+                updateBtn.textContent = originalText;
+                updateBtn.className = 'w-full bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded font-semibold transition-colors';
+            }, 2000);
+            
+            addLog(`Quiz password changed from "${oldPassword}" to "${newPassword}" by admin`);
+            
+            // Generate code snippet for manual implementation
+            generatePasswordCodeSnippet(newPassword);
+        }
+
+        function generatePasswordCodeSnippet(newPassword) {
+            const codeSnippet = `
+// Untuk mengimplementasikan password "${newPassword}" secara permanen dalam kode:
+// Ganti baris berikut dalam JavaScript:
+
+// SEBELUM:
+currentPassword: 'semogasukses',
+
+// SESUDAH:
+currentPassword: '${newPassword}',
+
+// Lokasi: Sekitar baris 634 dalam variabel quizState
+            `;
+            
+            console.log('='.repeat(60));
+            console.log('KODE IMPLEMENTASI PASSWORD BARU:');
+            console.log('='.repeat(60));
+            console.log(codeSnippet);
+            console.log('='.repeat(60));
+            
+            // Also log to activity log
+            addLog(`Code snippet generated for password "${newPassword}" - check browser console`);
+        }
+
+        function resetQuizData() {
+            if (!confirm('Apakah Anda yakin ingin mereset semua data quiz? Ini akan menghapus semua statistik dan memungkinkan peserta mengulang quiz.')) {
+                return;
+            }
+            
+            // Reset quiz state
+            quizState.hasCompleted = false;
+            quizState.isActive = false;
+            quizState.currentQuestionIndex = 0;
+            quizState.selectedQuestions = [];
+            quizState.userAnswers = [];
+            quizState.score = 0;
+            quizState.statistics = {
+                totalAttempts: 0,
+                scores: [],
+                averageScore: 0,
+                highestScore: 0
+            };
+            
+            // Hide quiz content and show password entry
+            document.getElementById('quizContent').style.display = 'none';
+            document.getElementById('quizResults').style.display = 'none';
+            document.getElementById('passwordEntry').style.display = 'block';
+            
+            // Clear password input
+            document.getElementById('quizPassword').value = '';
+            document.getElementById('passwordError').style.display = 'none';
+            
+            // Update admin statistics display
+            updateAdminStatistics();
+            
+            // Re-enable tab buttons
+            const staticBtn = document.getElementById('staticBtn');
+            const dynamicBtn = document.getElementById('dynamicBtn');
+            const subnettingBtn = document.getElementById('subnettingBtn');
+            
+            staticBtn.className = 'px-6 py-3 rounded-lg font-semibold transition-all duration-300 text-gray-600 hover:bg-gray-100';
+            dynamicBtn.className = 'px-6 py-3 rounded-lg font-semibold transition-all duration-300 text-gray-600 hover:bg-gray-100';
+            subnettingBtn.className = 'px-6 py-3 rounded-lg font-semibold transition-all duration-300 text-gray-600 hover:bg-gray-100';
+            
+            addLog('Quiz data reset by admin - all statistics cleared, quiz can be retaken');
+            
+            alert('Data quiz berhasil direset! Peserta sekarang dapat mengulang quiz.');
+        }
+
+        function updateAdminStatistics() {
+            document.getElementById('totalAttempts').textContent = quizState.statistics.totalAttempts;
+            document.getElementById('averageScore').textContent = quizState.statistics.averageScore + '%';
+        }
+
+        function adminLogout() {
+            adminState.isLoggedIn = false;
+            document.getElementById('adminLogin').style.display = 'block';
+            document.getElementById('adminControls').style.display = 'none';
+            document.getElementById('adminPasswordInput').value = '';
+            document.getElementById('adminLoginError').style.display = 'none';
+            
+            addLog('Admin logged out');
+        }
+
+        // Initialize all PCs to OFF state
+        for (let i = 1; i <= 4; i++) {
+            updatePCDisplay(i);
+        }
+        
+        // Initialize
+        addLog('IP Address Simulation ready. All PCs are powered OFF by default.');
+        document.getElementById('instruction').textContent = 'Nyalakan PC dan pilih mode IP assignment untuk memulai simulasi';
+
+        // IP Configuration Popup Functions
+        function openRouterConfig() {
+            const popup = document.getElementById('ipConfigPopup');
+            const title = document.getElementById('popupTitle');
+            const content = document.getElementById('popupContent');
+            const applyBtn = document.getElementById('applyPopupConfigBtn');
+            
+            title.textContent = '⚙️ Konfigurasi Router';
+            
+            if (currentMode === 'static') {
+                content.innerHTML = `
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-600 mb-1">IP Router:</label>
+                            <input type="text" id="popupRouterIP" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="192.168.1.1" value="${routerConfig.ip}">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-600 mb-1">Subnet Mask:</label>
+                            <input type="text" id="popupSubnetMask" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="255.255.255.0" value="${routerConfig.subnet}">
+                        </div>
+                    </div>
+                `;
+            } else {
+                content.innerHTML = `
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-600 mb-1">IP Router:</label>
+                            <input type="text" id="popupRouterIP" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="192.168.1.1" value="${routerConfig.ip}">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-600 mb-1">Subnet Mask:</label>
+                            <input type="text" id="popupSubnetMask" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="255.255.255.0" value="${routerConfig.subnet}">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-600 mb-1">DHCP Range:</label>
+                            <div class="flex space-x-2 mb-2">
+                                <input type="text" id="popupDhcpStart" class="flex-1 px-3 py-2 border border-gray-300 rounded-md" placeholder="192.168.1.100" value="${routerConfig.dhcpStart}">
+                                <span class="self-center text-gray-500">-</span>
+                                <input type="text" id="popupDhcpEnd" class="flex-1 px-3 py-2 border border-gray-300 rounded-md" placeholder="192.168.1.200" value="${routerConfig.dhcpEnd}">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-600 mb-1">Lease Time (menit):</label>
+                            <input type="number" id="popupLeaseTime" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="60" value="${routerConfig.leaseTime}" min="1" max="1440">
+                            <div class="text-xs text-gray-500 mt-1">Durasi sewa IP address (1-1440 menit)</div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            applyBtn.onclick = applyRouterConfig;
+            popup.style.display = 'flex';
+        }
+
+        function openPcConfig(pcNum) {
+            // In dynamic mode, only router can be clicked
+            if (currentMode === 'dynamic') {
+                addLog(`PC-${pcNum}: Konfigurasi manual tidak tersedia dalam mode DHCP`);
+                return;
+            }
+            
+            const popup = document.getElementById('ipConfigPopup');
+            const title = document.getElementById('popupTitle');
+            const content = document.getElementById('popupContent');
+            const applyBtn = document.getElementById('applyPopupConfigBtn');
+            
+            title.textContent = `💻 Konfigurasi PC-${pcNum}`;
+            
+            const currentConfig = pcConfigs[pcNum] || {};
+            
+            content.innerHTML = `
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-600 mb-1">IP Address:</label>
+                        <input type="text" id="popupPcIP" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="192.168.1.${100 + pcNum}" value="${currentConfig.ip || ''}">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-600 mb-1">Subnet Mask:</label>
+                        <input type="text" id="popupPcSubnet" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="255.255.255.0" value="${currentConfig.subnet || routerConfig.subnet}">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-600 mb-1">Gateway:</label>
+                        <input type="text" id="popupPcGateway" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="192.168.1.1" value="${currentConfig.gateway || routerConfig.ip}">
+                    </div>
+                </div>
+            `;
+            
+            applyBtn.onclick = () => applyPcConfig(pcNum);
+            popup.style.display = 'flex';
+        }
+
+        function closeIpConfigPopup() {
+            document.getElementById('ipConfigPopup').style.display = 'none';
+        }
+
+        function applyRouterConfig() {
+            const routerIP = document.getElementById('popupRouterIP').value;
+            const subnetMask = document.getElementById('popupSubnetMask').value;
+            
+            if (currentMode === 'dynamic') {
+                const dhcpStart = document.getElementById('popupDhcpStart').value;
+                const dhcpEnd = document.getElementById('popupDhcpEnd').value;
+                const leaseTime = parseInt(document.getElementById('popupLeaseTime').value);
+                
+                // Update router configuration
+                routerConfig.ip = routerIP || '192.168.1.1';
+                routerConfig.subnet = subnetMask || '255.255.255.0';
+                routerConfig.dhcpStart = dhcpStart || '192.168.1.100';
+                routerConfig.dhcpEnd = dhcpEnd || '192.168.1.200';
+                routerConfig.leaseTime = leaseTime || 5;
+                
+                // Validate DHCP range
+                const validation = validateDHCPRangeAdvanced();
+                if (!validation.valid) {
+                    alert(`Error: ${validation.message}`);
+                    return;
+                }
+                
+                // Generate new DHCP pool
+                generateDHCPPool();
+                
+                addLog(`Router: DHCP configuration updated - IP: ${routerConfig.ip}, Range: ${routerConfig.dhcpStart}-${routerConfig.dhcpEnd}, Lease: ${routerConfig.leaseTime} min`);
+            } else {
+                // Static mode - only update router IP and subnet
+                routerConfig.ip = routerIP || '192.168.1.1';
+                routerConfig.subnet = subnetMask || '255.255.255.0';
+                
+                // Check for IP conflicts with PCs
+                if (hasDuplicateIP(routerConfig.ip, 0)) {
+                    alert('Error: Router IP conflicts with existing PC IP addresses!');
+                    return;
+                }
+                
+                addLog(`Router: Static configuration updated - IP: ${routerConfig.ip}, Subnet: ${routerConfig.subnet}`);
+            }
+            
+            // Update router display
+            document.getElementById('routerIPDisplay').textContent = routerConfig.ip;
+            
+            // Check for IP conflicts after router config update
+            checkAllIPConflicts();
+            
+            closeIpConfigPopup();
+        }
+
+        function applyPcConfig(pcNum) {
+            const pcIP = document.getElementById('popupPcIP').value;
+            const pcSubnet = document.getElementById('popupPcSubnet').value;
+            const pcGateway = document.getElementById('popupPcGateway').value;
+            
+            if (!pcIP) {
+                alert('IP Address harus diisi!');
+                return;
+            }
+            
+            // Check for IP conflicts
+            if (hasDuplicateIP(pcIP, pcNum)) {
+                alert('Error: IP address conflicts with existing device IP addresses!');
+                return;
+            }
+            
+            // Update PC configuration
+            pcConfigs[pcNum] = {
+                ip: pcIP,
+                subnet: pcSubnet || routerConfig.subnet,
+                gateway: pcGateway || routerConfig.ip
+            };
+            
+            // Update display if PC is ON
+            if (pcPowerStates[pcNum]) {
+                document.getElementById(`ip${pcNum}`).textContent = pcIP;
+                document.getElementById(`ip${pcNum}`).parentElement.className = 'ip-display text-xs bg-blue-100 rounded px-2 py-1 mt-1';
+            }
+            
+            addLog(`PC-${pcNum}: Static IP configured - ${pcIP}/${getSubnetPrefix(pcConfigs[pcNum].subnet)}`);
+            
+            // Check for IP conflicts after PC config update
+            checkAllIPConflicts();
+            
+            closeIpConfigPopup();
+        }
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96da6eaea4f4811b',t:'MTc1NDk0MzYxMy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
