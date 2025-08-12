@@ -516,6 +516,7 @@
                         <h3 class="text-2xl font-bold text-gray-800 mb-4">Quiz Terproteksi</h3>
                         <p class="text-gray-600 mb-6">Masukkan password untuk mengakses quiz jaringan dan IP addressing</p>
                         <div class="space-y-4">
+                            <input type="text" id="userName" class="w-full px-4 py-3 border border-gray-300 rounded-lg text-center text-lg" placeholder="Masukkan nama Anda">
                             <input type="password" id="quizPassword" class="w-full px-4 py-3 border border-gray-300 rounded-lg text-center text-lg" placeholder="Masukkan password quiz">
                             <button id="enterQuizBtn" class="w-full bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold transition-colors">
                                 🚀 Mulai Quiz
@@ -616,10 +617,50 @@
                             </div>
                         </div>
 
-                        <div class="text-sm text-gray-500">
-                            Terima kasih telah mengikuti quiz! Anda tidak dapat mengulang quiz ini.
+                        <div class="text-sm text-gray-500 mb-4">
+                            Terima kasih telah mengikuti quiz! Klik tombol di bawah untuk memulai quiz baru.
                         </div>
+                        
+                        <!-- New Quiz Button -->
+                        <button id="newQuizBtn" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold transition-colors">
+                            🚀 Quiz Baru
+                        </button>
+                        
+                        <!-- View Quiz History Button -->
+                        <button id="viewHistoryBtn" class="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg font-semibold transition-colors ml-4">
+                            📊 Lihat Riwayat Quiz
+                        </button>
+                        
+                        <!-- Debug Button (for troubleshooting) -->
+                        <button id="debugQuizBtn" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-3 rounded-lg font-semibold transition-colors ml-4 text-sm">
+                            🐛 Debug
+                        </button>
+                        
+                        <!-- Test Button (for adding test data) -->
+                        <button id="testQuizBtn" class="bg-purple-500 hover:bg-purple-600 text-white px-4 py-3 rounded-lg font-semibold transition-colors ml-4 text-sm">
+                            🧪 Test
+                        </button>
                     </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quiz History Modal -->
+        <div id="quizHistoryModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center">
+            <div class="bg-white rounded-xl p-6 max-w-4xl w-full mx-4 max-h-[80vh] overflow-y-auto">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-2xl font-bold text-gray-800">📊 Riwayat Quiz</h3>
+                    <button id="closeHistoryModal" class="text-gray-500 hover:text-gray-700 text-2xl font-bold">&times;</button>
+                </div>
+                
+                <div id="quizHistoryContent">
+                    <!-- Quiz history will be populated here -->
+                </div>
+                
+                <div class="mt-6 text-center">
+                    <button id="clearHistoryBtn" class="bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-lg font-semibold transition-colors">
+                        🗑️ Hapus Semua Riwayat
+                    </button>
                 </div>
             </div>
         </div>
@@ -656,7 +697,8 @@
         let quizState = {
             isActive: false,
             hasCompleted: false,
-            currentPassword: 'semogasukses',
+            currentPassword: '',
+            userName: '',
             currentQuestionIndex: 0,
             selectedQuestions: [],
             userAnswers: [],
@@ -672,9 +714,81 @@
         // Admin System Variables
         let adminState = {
             isLoggedIn: false,
-            adminPassword: 'admin123',
+            adminPassword: '',
             showAdminPanel: false
         };
+
+        // External configuration data
+        let adminConfig = {};
+        let quizConfig = {};
+        let quizResults = { results: [] };
+
+        // Load external configuration files
+        async function loadExternalConfig() {
+            try {
+                // Load admin configuration
+                const adminResponse = await fetch('admin.js');
+                const adminText = await adminResponse.text();
+                // Execute the JavaScript to get the variable
+                eval(adminText);
+                if (typeof adminConfig !== 'undefined') {
+                    adminState.adminPassword = adminConfig.adminPassword;
+                }
+
+                // Load quiz configuration
+                const quizResponse = await fetch('quiz.js');
+                const quizText = await quizResponse.text();
+                // Execute the JavaScript to get the variable
+                eval(quizText);
+                if (typeof quizConfig !== 'undefined') {
+                    quizState.currentPassword = quizConfig.quizPassword;
+                }
+
+                // Load quiz results
+                const resultsResponse = await fetch('result-quiz.js');
+                const resultsText = await resultsResponse.text();
+                // Execute the JavaScript to get the variable
+                eval(resultsText);
+                
+                // Ensure quizResults is properly initialized
+                if (typeof quizResults !== 'undefined' && quizResults.results) {
+                    console.log('Quiz results loaded from external file:', quizResults.results.length, 'results');
+                } else {
+                    // Initialize if not properly loaded
+                    quizResults = { results: [] };
+                    console.log('Quiz results initialized as empty array');
+                }
+
+                console.log('External configuration loaded successfully');
+            } catch (error) {
+                console.error('Error loading external configuration:', error);
+                // Fallback to default values
+                adminState.adminPassword = 'admin00';
+                quizState.currentPassword = 'semogaberhasil';
+                quizResults = { results: [] };
+            }
+            
+            // Try to load results from localStorage as backup
+            try {
+                const storedResults = localStorage.getItem('quizResults');
+                if (storedResults) {
+                    const parsedResults = JSON.parse(storedResults);
+                    if (parsedResults && parsedResults.results) {
+                        quizResults.results = parsedResults.results;
+                        console.log('Quiz results loaded from localStorage:', quizResults.results.length, 'results');
+                    }
+                }
+            } catch (localError) {
+                console.error('Error loading results from localStorage:', localError);
+                quizResults.results = [];
+            }
+            
+            // Final check to ensure quizResults is properly initialized
+            if (!quizResults || !quizResults.results) {
+                quizResults = { results: [] };
+                console.log('Quiz results initialized as empty array (fallback)');
+            }
+        }
 
         // Question Bank (30 questions)
         const questionBank = [
@@ -956,6 +1070,15 @@
         document.getElementById('checkConnectionBtn').addEventListener('click', checkConnections);
         document.getElementById('layoutToggleBtn').addEventListener('click', toggleLayout);
         document.getElementById('resetConfigBtn').addEventListener('click', resetAll);
+
+        // Load external configuration when page loads
+        loadExternalConfig();
+        
+        // Debug quiz results after loading
+        setTimeout(() => {
+            console.log('=== INITIAL QUIZ RESULTS STATE ===');
+            debugQuizResults();
+        }, 1000);
         
         // Close popup when clicking outside
         document.getElementById('ipConfigPopup').addEventListener('click', function(e) {
@@ -1985,6 +2108,12 @@
         // Quiz Event Listeners
         document.getElementById('enterQuizBtn').addEventListener('click', enterQuiz);
         document.getElementById('nextQuestionBtn').addEventListener('click', nextQuestion);
+        document.getElementById('newQuizBtn').addEventListener('click', startNewQuiz);
+        document.getElementById('viewHistoryBtn').addEventListener('click', showQuizHistory);
+        document.getElementById('closeHistoryModal').addEventListener('click', closeQuizHistory);
+        document.getElementById('clearHistoryBtn').addEventListener('click', clearQuizHistory);
+        document.getElementById('debugQuizBtn').addEventListener('click', debugQuizResults);
+        document.getElementById('testQuizBtn').addEventListener('click', addTestQuizResult);
 
         // Admin Event Listeners
         document.getElementById('adminToggleBtn').addEventListener('click', toggleAdminPanel);
@@ -1997,10 +2126,17 @@
 
         function enterQuiz() {
             const enteredPassword = document.getElementById('quizPassword').value;
+            const userName = document.getElementById('userName').value.trim();
             const errorDiv = document.getElementById('passwordError');
             
             if (quizState.hasCompleted) {
                 errorDiv.textContent = 'Anda sudah menyelesaikan quiz ini!';
+                errorDiv.style.display = 'block';
+                return;
+            }
+            
+            if (!userName) {
+                errorDiv.textContent = 'Nama harus diisi!';
                 errorDiv.style.display = 'block';
                 return;
             }
@@ -2010,6 +2146,9 @@
                 errorDiv.style.display = 'block';
                 return;
             }
+            
+            // Store user name for later use
+            quizState.userName = userName;
             
             // Password correct, start quiz
             startQuiz();
@@ -2190,6 +2329,9 @@
             // Update statistics
             updateQuizStatistics(quizState.score);
             
+            // Save result to external file
+            saveQuizResult(quizState.userName, quizState.score);
+            
             // Mark as completed
             quizState.hasCompleted = true;
             quizState.isActive = false;
@@ -2198,6 +2340,85 @@
             showQuizResults(correctAnswers);
             
             addLog(`Quiz completed - Score: ${quizState.score}% (${correctAnswers}/10 correct)`);
+        }
+
+        async function saveQuizResult(userName, score) {
+            try {
+                // Ensure quizResults is properly initialized
+                if (!quizResults || !quizResults.results) {
+                    quizResults = { results: [] };
+                    console.log('Quiz results initialized in saveQuizResult');
+                }
+                
+                // Create the result object
+                const newResult = {
+                    name: userName,
+                    score: score,
+                    timestamp: new Date().toISOString()
+                };
+                
+                // Add new result to the results array
+                quizResults.results.push(newResult);
+                
+                // Save to localStorage
+                localStorage.setItem('quizResults', JSON.stringify(quizResults));
+                
+                console.log('Quiz result saved successfully:', newResult);
+                console.log('Total results in memory:', quizResults.results.length);
+                console.log('Results saved to localStorage');
+                
+                // Log all current results for debugging
+                console.log('All current results:', quizResults.results);
+                
+                // Call debug function to verify state
+                debugQuizResults();
+                
+            } catch (error) {
+                console.error('Error saving quiz result:', error);
+                // Try to save to localStorage as fallback
+                try {
+                    const fallbackResults = { results: [{
+                        name: userName,
+                        score: score,
+                        timestamp: new Date().toISOString()
+                    }]};
+                    localStorage.setItem('quizResults', JSON.stringify(fallbackResults));
+                    console.log('Quiz result saved to localStorage as fallback');
+                } catch (fallbackError) {
+                    console.error('Failed to save quiz result even to localStorage:', fallbackError);
+                }
+            }
+        }
+
+        function startNewQuiz() {
+            // Reset quiz state
+            quizState.hasCompleted = false;
+            quizState.isActive = false;
+            quizState.currentQuestionIndex = 0;
+            quizState.selectedQuestions = [];
+            quizState.userAnswers = [];
+            quizState.score = 0;
+            quizState.userName = '';
+            
+            // Hide results and show password entry
+            document.getElementById('quizResults').style.display = 'none';
+            document.getElementById('passwordEntry').style.display = 'block';
+            
+            // Clear inputs
+            document.getElementById('userName').value = '';
+            document.getElementById('quizPassword').value = '';
+            document.getElementById('passwordError').style.display = 'none';
+            
+            // Re-enable tab buttons
+            const staticBtn = document.getElementById('staticBtn');
+            const dynamicBtn = document.getElementById('dynamicBtn');
+            const subnettingBtn = document.getElementById('subnettingBtn');
+            
+            staticBtn.className = 'px-6 py-3 rounded-lg font-semibold transition-all duration-300 text-gray-600 hover:bg-gray-100';
+            dynamicBtn.className = 'px-6 py-3 rounded-lg font-semibold transition-all duration-300 text-gray-600 hover:bg-gray-100';
+            subnettingBtn.className = 'px-6 py-3 rounded-lg font-semibold transition-all duration-300 text-gray-600 hover:bg-gray-100';
+            
+            addLog('New quiz started - previous quiz data cleared');
         }
 
         function showQuizResults(correctAnswers) {
@@ -2386,6 +2607,10 @@ currentPassword: '${newPassword}',
                 highestScore: 0
             };
             
+            // Clear external results
+            quizResults.results = [];
+            localStorage.removeItem('quizResults');
+            
             // Hide quiz content and show password entry
             document.getElementById('quizContent').style.display = 'none';
             document.getElementById('quizResults').style.display = 'none';
@@ -2393,6 +2618,7 @@ currentPassword: '${newPassword}',
             
             // Clear password input
             document.getElementById('quizPassword').value = '';
+            document.getElementById('userName').value = '';
             document.getElementById('passwordError').style.display = 'none';
             
             // Update admin statistics display
@@ -2435,6 +2661,173 @@ currentPassword: '${newPassword}',
         // Initialize
         addLog('IP Address Simulation ready. All PCs are powered OFF by default.');
         document.getElementById('instruction').textContent = 'Nyalakan PC dan pilih mode IP assignment untuk memulai simulasi';
+
+        // Quiz History Functions
+        function showQuizHistory() {
+            const modal = document.getElementById('quizHistoryModal');
+            const content = document.getElementById('quizHistoryContent');
+            
+            // Debug logging
+            console.log('=== SHOWING QUIZ HISTORY ===');
+            console.log('quizResults:', quizResults);
+            console.log('quizResults.results:', quizResults.results);
+            console.log('quizResults.results.length:', quizResults.results.length);
+            
+            // Ensure quizResults is properly initialized
+            if (!quizResults || !quizResults.results) {
+                console.log('quizResults not properly initialized, initializing now...');
+                quizResults = { results: [] };
+                
+                // Try to load from localStorage
+                try {
+                    const storedResults = localStorage.getItem('quizResults');
+                    if (storedResults) {
+                        const parsedResults = JSON.parse(storedResults);
+                        if (parsedResults && parsedResults.results) {
+                            quizResults.results = parsedResults.results;
+                            console.log('Loaded results from localStorage:', quizResults.results.length);
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error loading from localStorage:', error);
+                }
+            }
+            
+            if (quizResults.results.length === 0) {
+                content.innerHTML = `
+                    <div class="text-center py-8">
+                        <div class="text-6xl mb-4">📝</div>
+                        <h4 class="text-xl font-semibold text-gray-600 mb-2">Belum ada riwayat quiz</h4>
+                        <p class="text-gray-500">Mulai quiz pertama Anda untuk melihat riwayat hasil!</p>
+                    </div>
+                `;
+            } else {
+                // Sort results by timestamp (newest first)
+                const sortedResults = [...quizResults.results].sort((a, b) => 
+                    new Date(b.timestamp) - new Date(a.timestamp)
+                );
+                
+                let historyHTML = `
+                    <div class="bg-gray-50 rounded-lg p-4 mb-4">
+                        <h4 class="text-lg font-semibold text-gray-800 mb-2">📊 Statistik Keseluruhan</h4>
+                        <div class="grid grid-cols-3 gap-4 text-center">
+                            <div class="bg-blue-50 rounded-lg p-3">
+                                <div class="text-xl font-bold text-blue-600">${quizResults.results.length}</div>
+                                <div class="text-sm text-blue-700">Total Quiz</div>
+                            </div>
+                            <div class="bg-green-50 rounded-lg p-3">
+                                <div class="text-xl font-bold text-green-600">${Math.round(quizResults.results.reduce((sum, r) => sum + r.score, 0) / quizResults.results.length)}%</div>
+                                <div class="text-sm text-green-700">Rata-rata</div>
+                            </div>
+                            <div class="bg-yellow-50 rounded-lg p-3">
+                                <div class="text-xl font-bold text-yellow-600">${Math.max(...quizResults.results.map(r => r.score))}%</div>
+                                <div class="text-sm text-yellow-700">Skor Tertinggi</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <h4 class="text-lg font-semibold text-gray-800">📋 Riwayat Detail</h4>
+                `;
+                
+                sortedResults.forEach((result, index) => {
+                    const date = new Date(result.timestamp);
+                    const formattedDate = date.toLocaleDateString('id-ID', {
+                        day: '2-digit',
+                        month: '2-digit',
+                        year: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
+                    
+                    const scoreColor = result.score >= 80 ? 'text-green-600' : 
+                                     result.score >= 60 ? 'text-yellow-600' : 'text-red-600';
+                    
+                    historyHTML += `
+                        <div class="bg-white border border-gray-200 rounded-lg p-4">
+                            <div class="flex justify-between items-center">
+                                <div>
+                                    <div class="font-semibold text-gray-800">${result.name}</div>
+                                    <div class="text-sm text-gray-500">${formattedDate}</div>
+                                </div>
+                                <div class="text-right">
+                                    <div class="text-2xl font-bold ${scoreColor}">${result.score}%</div>
+                                    <div class="text-xs text-gray-500">Skor</div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                historyHTML += '</div>';
+                content.innerHTML = historyHTML;
+            }
+            
+            modal.classList.remove('hidden');
+        }
+        
+        function closeQuizHistory() {
+            document.getElementById('quizHistoryModal').classList.add('hidden');
+        }
+        
+        function clearQuizHistory() {
+            if (!confirm('Apakah Anda yakin ingin menghapus semua riwayat quiz? Tindakan ini tidak dapat dibatalkan.')) {
+                return;
+            }
+            
+            quizResults.results = [];
+            localStorage.removeItem('quizResults');
+            
+            // Refresh the history display
+            showQuizHistory();
+            
+            addLog('All quiz history cleared');
+            alert('Semua riwayat quiz berhasil dihapus!');
+        }
+        
+        // Debug function to check quiz results state
+        function debugQuizResults() {
+            console.log('=== QUIZ RESULTS DEBUG ===');
+            console.log('quizResults variable:', quizResults);
+            console.log('quizResults.results:', quizResults.results);
+            console.log('quizResults.results.length:', quizResults.results.length);
+            
+            const storedResults = localStorage.getItem('quizResults');
+            console.log('localStorage quizResults:', storedResults);
+            
+            if (storedResults) {
+                try {
+                    const parsed = JSON.parse(storedResults);
+                    console.log('Parsed localStorage results:', parsed);
+                    console.log('Parsed results length:', parsed.results ? parsed.results.length : 'undefined');
+                } catch (e) {
+                    console.error('Error parsing localStorage results:', e);
+                }
+            }
+            
+            console.log('=== END DEBUG ===');
+        }
+        
+        // Test function to add a sample quiz result
+        function addTestQuizResult() {
+            const testResult = {
+                name: 'Test User',
+                score: 85,
+                timestamp: new Date().toISOString()
+            };
+            
+            if (!quizResults || !quizResults.results) {
+                quizResults = { results: [] };
+            }
+            
+            quizResults.results.push(testResult);
+            localStorage.setItem('quizResults', JSON.stringify(quizResults));
+            
+            console.log('Test quiz result added:', testResult);
+            console.log('Total results now:', quizResults.results.length);
+            
+            alert('Test quiz result added! Check console for details.');
+        }
 
         // IP Configuration Popup Functions
         function openRouterConfig() {
