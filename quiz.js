@@ -1,4 +1,5 @@
 // quiz.js
 const quizConfig = {
-    "quizPassword": "semogaberhasil"
+    "quizPassword": "semoga123"
 };
+
