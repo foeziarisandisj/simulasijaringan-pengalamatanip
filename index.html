@@ -784,8 +784,53 @@
             }
         }
 
-        // Question Bank (30 questions)
+        // Question Bank (30 questions) - Konsep Jaringan Kabel dan Nirkabel, IP Address, Subnetting
         const questionBank = [
+            // Konsep Jaringan Kabel dan Nirkabel
+            {
+                question: "Apa perbedaan utama antara jaringan kabel dan nirkabel?",
+                options: ["Jaringan kabel lebih cepat, nirkabel lebih lambat", "Jaringan kabel menggunakan kabel UTP, nirkabel menggunakan gelombang radio", "Jaringan kabel lebih mahal, nirkabel lebih murah", "Jaringan kabel untuk indoor, nirkabel untuk outdoor"],
+                correct: 1,
+                category: "network"
+            },
+            {
+                question: "Kabel UTP kategori 6 (Cat 6) dapat mendukung kecepatan maksimal berapa?",
+                options: ["100 Mbps", "1 Gbps", "10 Gbps", "100 Gbps"],
+                correct: 2,
+                category: "network"
+            },
+            {
+                question: "Apa keuntungan utama jaringan nirkabel dibanding jaringan kabel?",
+                options: ["Kecepatan lebih tinggi", "Mobilitas dan fleksibilitas", "Keamanan lebih baik", "Biaya lebih murah"],
+                correct: 1,
+                category: "network"
+            },
+            {
+                question: "Apa fungsi dari Access Point (AP) dalam jaringan nirkabel?",
+                options: ["Mengatur IP address", "Meneruskan sinyal nirkabel", "Mengamankan jaringan", "Mengatur bandwidth"],
+                correct: 1,
+                category: "network"
+            },
+            {
+                question: "Dalam pemasangan jaringan kabel, berapa jarak maksimal kabel UTP Cat 5e?",
+                options: ["50 meter", "100 meter", "150 meter", "200 meter"],
+                correct: 1,
+                category: "network"
+            },
+            {
+                question: "Apa yang dimaksud dengan SSID dalam jaringan nirkabel?",
+                options: ["Service Set Identifier", "Security System ID", "Signal Strength ID", "Server System ID"],
+                correct: 0,
+                category: "network"
+            },
+            {
+                question: "Dalam studi kasus pemasangan jaringan kantor, apa yang harus dipertimbangkan pertama kali?",
+                options: ["Biaya termurah", "Kecepatan tertinggi", "Kebutuhan dan skala jaringan", "Merek perangkat"],
+                correct: 2,
+                category: "network"
+            },
+            
+            // IP Address
             {
                 question: "Apa kepanjangan dari IP dalam konteks jaringan komputer?",
                 options: ["Internet Protocol", "Internal Program", "Information Processing", "Integrated Platform"],
@@ -799,52 +844,10 @@
                 category: "basic"
             },
             {
-                question: "Subnet mask 255.255.255.0 setara dengan notasi CIDR berapa?",
-                options: ["/16", "/24", "/25", "/30"],
-                correct: 1,
-                category: "subnetting"
-            },
-            {
                 question: "Alamat IP 192.168.1.0 termasuk dalam kelas IP yang mana?",
                 options: ["Kelas A", "Kelas B", "Kelas C", "Kelas D"],
                 correct: 2,
                 category: "basic"
-            },
-            {
-                question: "Apa fungsi utama dari DHCP server?",
-                options: ["Mengatur keamanan jaringan", "Memberikan IP address secara otomatis", "Mengelola bandwidth", "Mengatur routing"],
-                correct: 1,
-                category: "dhcp"
-            },
-            {
-                question: "Berapa jumlah host yang dapat ditampung dalam subnet /26?",
-                options: ["32 host", "62 host", "64 host", "126 host"],
-                correct: 1,
-                category: "subnetting"
-            },
-            {
-                question: "Alamat IP manakah yang merupakan alamat private?",
-                options: ["8.8.8.8", "172.16.1.1", "203.142.1.1", "74.125.224.72"],
-                correct: 1,
-                category: "basic"
-            },
-            {
-                question: "Apa yang dimaksud dengan broadcast address?",
-                options: ["Alamat pertama dalam subnet", "Alamat terakhir dalam subnet", "Alamat router", "Alamat DNS server"],
-                correct: 1,
-                category: "subnetting"
-            },
-            {
-                question: "Port berapa yang digunakan oleh DHCP server?",
-                options: ["Port 53", "Port 67", "Port 80", "Port 443"],
-                correct: 1,
-                category: "dhcp"
-            },
-            {
-                question: "Dalam subnetting, apa yang terjadi jika subnet mask diperbesar?",
-                options: ["Jumlah host bertambah", "Jumlah host berkurang", "Jumlah network berkurang", "Tidak ada perubahan"],
-                correct: 1,
-                category: "subnetting"
             },
             {
                 question: "Alamat IP 127.0.0.1 digunakan untuk apa?",
@@ -859,58 +862,10 @@
                 category: "basic"
             },
             {
-                question: "Apa kepanjangan dari VLSM?",
-                options: ["Variable Length Subnet Mask", "Virtual Local Subnet Mask", "Very Large Subnet Mask", "Variable Link Subnet Mask"],
-                correct: 0,
-                category: "subnetting"
-            },
-            {
-                question: "Dalam konfigurasi IP statis, informasi apa saja yang harus diisi?",
-                options: ["IP address saja", "IP address dan subnet mask", "IP address, subnet mask, dan gateway", "Hanya gateway"],
-                correct: 2,
-                category: "static"
-            },
-            {
-                question: "Apa perbedaan utama antara hub dan switch?",
-                options: ["Hub bekerja di layer 3, switch di layer 2", "Hub membuat collision domain terpisah", "Switch membuat collision domain terpisah", "Tidak ada perbedaan"],
-                correct: 2,
-                category: "network"
-            },
-            {
-                question: "Berapa lama default lease time DHCP pada umumnya?",
-                options: ["1 jam", "8 jam", "24 jam", "7 hari"],
-                correct: 2,
-                category: "dhcp"
-            },
-            {
-                question: "Subnet mask 255.255.255.240 setara dengan /berapa?",
-                options: ["/26", "/27", "/28", "/29"],
-                correct: 2,
-                category: "subnetting"
-            },
-            {
                 question: "Apa yang dimaksud dengan default gateway?",
                 options: ["Server DHCP", "Alamat router untuk keluar dari network lokal", "Alamat broadcast", "Alamat DNS"],
                 correct: 1,
                 category: "basic"
-            },
-            {
-                question: "Dalam subnet 192.168.1.0/25, berapa alamat network dan broadcast?",
-                options: ["Network: 192.168.1.0, Broadcast: 192.168.1.255", "Network: 192.168.1.0, Broadcast: 192.168.1.127", "Network: 192.168.1.128, Broadcast: 192.168.1.255", "Network: 192.168.1.1, Broadcast: 192.168.1.254"],
-                correct: 1,
-                category: "subnetting"
-            },
-            {
-                question: "Apa fungsi dari ARP (Address Resolution Protocol)?",
-                options: ["Mengkonversi nama domain ke IP", "Mengkonversi IP address ke MAC address", "Mengatur routing", "Mengatur DHCP"],
-                correct: 1,
-                category: "network"
-            },
-            {
-                question: "Berapa jumlah maksimum host dalam subnet /30?",
-                options: ["2 host", "4 host", "6 host", "8 host"],
-                correct: 0,
-                category: "subnetting"
             },
             {
                 question: "Apa yang terjadi jika dua perangkat memiliki IP address yang sama dalam satu network?",
@@ -919,22 +874,62 @@
                 category: "basic"
             },
             {
-                question: "Dalam instalasi jaringan, kabel UTP kategori berapa yang paling umum digunakan?",
-                options: ["Cat 3", "Cat 5", "Cat 5e", "Cat 7"],
-                correct: 2,
-                category: "network"
-            },
-            {
-                question: "Apa kepanjangan dari DNS?",
-                options: ["Domain Name System", "Dynamic Network Service", "Data Network Security", "Digital Name Server"],
-                correct: 0,
+                question: "Berapa range alamat IP kelas B?",
+                options: ["1.0.0.0 - 126.255.255.255", "128.0.0.0 - 191.255.255.255", "192.0.0.0 - 223.255.255.255", "224.0.0.0 - 239.255.255.255"],
+                correct: 1,
                 category: "basic"
             },
+            
+            // IP Statis
             {
-                question: "Berapa jumlah network yang dapat dibuat dari IP kelas C dengan subnet /26?",
-                options: ["2 network", "4 network", "6 network", "8 network"],
+                question: "Dalam konfigurasi IP statis, informasi apa saja yang harus diisi?",
+                options: ["IP address saja", "IP address dan subnet mask", "IP address, subnet mask, dan gateway", "Hanya gateway"],
+                correct: 2,
+                category: "static"
+            },
+            {
+                question: "Apa keuntungan menggunakan IP statis?",
+                options: ["Konfigurasi otomatis", "IP address tidak berubah", "Mudah dikelola", "Biaya lebih murah"],
                 correct: 1,
-                category: "subnetting"
+                category: "static"
+            },
+            {
+                question: "Kapan sebaiknya menggunakan IP statis?",
+                options: ["Untuk semua perangkat", "Untuk server dan printer", "Hanya untuk laptop", "Hanya untuk smartphone"],
+                correct: 1,
+                category: "static"
+            },
+            {
+                question: "Apa yang terjadi jika IP statis tidak dikonfigurasi dengan benar?",
+                options: ["Perangkat tetap bisa terhubung", "Perangkat tidak bisa terhubung ke jaringan", "Perangkat otomatis mendapat IP", "Tidak ada pengaruh"],
+                correct: 1,
+                category: "static"
+            },
+            {
+                question: "Dalam studi kasus pemasangan jaringan kantor, berapa IP statis yang sebaiknya disediakan?",
+                options: ["Semua perangkat", "Hanya server dan printer", "Hanya komputer admin", "Tidak ada yang perlu IP statis"],
+                correct: 1,
+                category: "static"
+            },
+            
+            // IP Dinamis
+            {
+                question: "Apa fungsi utama dari DHCP server?",
+                options: ["Mengatur keamanan jaringan", "Memberikan IP address secara otomatis", "Mengelola bandwidth", "Mengatur routing"],
+                correct: 1,
+                category: "dhcp"
+            },
+            {
+                question: "Port berapa yang digunakan oleh DHCP server?",
+                options: ["Port 53", "Port 67", "Port 80", "Port 443"],
+                correct: 1,
+                category: "dhcp"
+            },
+            {
+                question: "Berapa lama default lease time DHCP pada umumnya?",
+                options: ["1 jam", "8 jam", "24 jam", "7 hari"],
+                correct: 2,
+                category: "dhcp"
             },
             {
                 question: "Apa yang dimaksud dengan APIPA (Automatic Private IP Addressing)?",
@@ -943,16 +938,80 @@
                 category: "dhcp"
             },
             {
-                question: "Dalam topologi jaringan, apa kelebihan topologi star?",
-                options: ["Hemat kabel", "Jika satu node rusak, network tetap berjalan", "Tidak perlu hub/switch", "Kecepatan paling tinggi"],
+                question: "Dalam DHCP, apa yang dimaksud dengan DHCP reservation?",
+                options: ["Menyimpan konfigurasi DHCP", "Memberikan IP tetap untuk MAC address tertentu", "Membatasi jumlah client", "Mengatur lease time"],
                 correct: 1,
-                category: "network"
+                category: "dhcp"
+            },
+            
+            // Subnetting IP Address
+            {
+                question: "Subnet mask 255.255.255.0 setara dengan notasi CIDR berapa?",
+                options: ["/16", "/24", "/25", "/30"],
+                correct: 1,
+                category: "subnetting"
+            },
+            {
+                question: "Berapa jumlah host yang dapat ditampung dalam subnet /26?",
+                options: ["32 host", "62 host", "64 host", "126 host"],
+                correct: 1,
+                category: "subnetting"
+            },
+            {
+                question: "Apa yang dimaksud dengan broadcast address?",
+                options: ["Alamat pertama dalam subnet", "Alamat terakhir dalam subnet", "Alamat router", "Alamat DNS server"],
+                correct: 1,
+                category: "subnetting"
+            },
+            {
+                question: "Dalam subnetting, apa yang terjadi jika subnet mask diperbesar?",
+                options: ["Jumlah host bertambah", "Jumlah host berkurang", "Jumlah network berkurang", "Tidak ada perubahan"],
+                correct: 1,
+                category: "subnetting"
+            },
+            {
+                question: "Apa kepanjangan dari VLSM?",
+                options: ["Variable Length Subnet Mask", "Virtual Local Subnet Mask", "Very Large Subnet Mask", "Variable Link Subnet Mask"],
+                correct: 0,
+                category: "subnetting"
+            },
+            {
+                question: "Subnet mask 255.255.255.240 setara dengan /berapa?",
+                options: ["/26", "/27", "/28", "/29"],
+                correct: 2,
+                category: "subnetting"
+            },
+            {
+                question: "Dalam subnet 192.168.1.0/25, berapa alamat network dan broadcast?",
+                options: ["Network: 192.168.1.0, Broadcast: 192.168.1.255", "Network: 192.168.1.0, Broadcast: 192.168.1.127", "Network: 192.168.1.128, Broadcast: 192.168.1.255", "Network: 192.168.1.1, Broadcast: 192.168.1.254"],
+                correct: 1,
+                category: "subnetting"
+            },
+            {
+                question: "Berapa jumlah maksimum host dalam subnet /30?",
+                options: ["2 host", "4 host", "6 host", "8 host"],
+                correct: 0,
+                category: "subnetting"
+            },
+            {
+                question: "Berapa jumlah network yang dapat dibuat dari IP kelas C dengan subnet /26?",
+                options: ["2 network", "4 network", "6 network", "8 network"],
+                correct: 1,
+                category: "subnetting"
             },
             {
                 question: "Apa fungsi dari subnet mask?",
                 options: ["Mengatur kecepatan jaringan", "Membedakan bagian network dan host dari IP address", "Mengatur keamanan", "Mengatur protokol"],
                 correct: 1,
                 category: "subnetting"
+            },
+            
+            // Studi Kasus Pemasangan Jaringan
+            {
+                question: "Dalam topologi jaringan, apa kelebihan topologi star?",
+                options: ["Hemat kabel", "Jika satu node rusak, network tetap berjalan", "Tidak perlu hub/switch", "Kecepatan paling tinggi"],
+                correct: 1,
+                category: "network"
             },
             {
                 question: "Berapa range port yang digunakan untuk aplikasi well-known services?",
@@ -961,10 +1020,10 @@
                 category: "network"
             },
             {
-                question: "Dalam DHCP, apa yang dimaksud dengan DHCP reservation?",
-                options: ["Menyimpan konfigurasi DHCP", "Memberikan IP tetap untuk MAC address tertentu", "Membatasi jumlah client", "Mengatur lease time"],
+                question: "Dalam studi kasus pemasangan jaringan nirkabel untuk cafe, apa yang paling penting?",
+                options: ["Kecepatan maksimal", "Cakupan area dan keamanan", "Biaya termurah", "Merek perangkat"],
                 correct: 1,
-                category: "dhcp"
+                category: "network"
             }
         ];
 
