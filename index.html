@@ -727,31 +727,24 @@
         async function loadExternalConfig() {
             try {
                 // Load admin configuration
-                const adminResponse = await fetch('admin.js');
-                const adminText = await adminResponse.text();
-                // Execute the JavaScript to get the variable
-                eval(adminText);
-                if (typeof adminConfig !== 'undefined') {
-                    adminState.adminPassword = adminConfig.adminPassword;
-                }
+                const adminResponse = await fetch('admin.json');
+                const adminData = await adminResponse.json();
+                adminState.adminPassword = adminData.adminPassword;
+                console.log('Admin password loaded:', adminState.adminPassword);
 
                 // Load quiz configuration
-                const quizResponse = await fetch('quiz.js');
-                const quizText = await quizResponse.text();
-                // Execute the JavaScript to get the variable
-                eval(quizText);
-                if (typeof quizConfig !== 'undefined') {
-                    quizState.currentPassword = quizConfig.quizPassword;
-                }
+                const quizResponse = await fetch('quiz.json');
+                const quizData = await quizResponse.json();
+                quizState.currentPassword = quizData.quizPassword;
+                console.log('Quiz password loaded:', quizState.currentPassword);
 
                 // Load quiz results
-                const resultsResponse = await fetch('result-quiz.js');
-                const resultsText = await resultsResponse.text();
-                // Execute the JavaScript to get the variable
-                eval(resultsText);
+                const resultsResponse = await fetch('result-quiz.json');
+                const resultsData = await resultsResponse.json();
                 
                 // Ensure quizResults is properly initialized
-                if (typeof quizResults !== 'undefined' && quizResults.results) {
+                if (resultsData && resultsData.results) {
+                    quizResults.results = [...resultsData.results];
                     console.log('Quiz results loaded from external file:', quizResults.results.length, 'results');
                 } else {
                     // Initialize if not properly loaded
@@ -764,8 +757,9 @@
                 console.error('Error loading external configuration:', error);
                 // Fallback to default values
                 adminState.adminPassword = 'admin00';
-                quizState.currentPassword = 'semogaberhasil';
+                quizState.currentPassword = 'semogasukses';
                 quizResults = { results: [] };
+                console.log('Using fallback passwords - admin:', adminState.adminPassword, 'quiz:', quizState.currentPassword);
             }
             
             // Try to load results from localStorage as backup
@@ -2129,6 +2123,9 @@
             const userName = document.getElementById('userName').value.trim();
             const errorDiv = document.getElementById('passwordError');
             
+            console.log('Quiz login attempt - entered password:', enteredPassword, 'expected:', quizState.currentPassword);
+            console.log('User name:', userName);
+            
             if (quizState.hasCompleted) {
                 errorDiv.textContent = 'Anda sudah menyelesaikan quiz ini!';
                 errorDiv.style.display = 'block';
@@ -2142,8 +2139,9 @@
             }
             
             if (enteredPassword !== quizState.currentPassword) {
-                errorDiv.textContent = 'Password salah! Silakan coba lagi.';
+                errorDiv.textContent = 'Password quiz salah! Silakan coba lagi.';
                 errorDiv.style.display = 'block';
+                console.log('Quiz login failed - password mismatch');
                 return;
             }
             
@@ -2152,6 +2150,7 @@
             
             // Password correct, start quiz
             startQuiz();
+            console.log('Quiz login successful');
         }
 
         function startQuiz() {
@@ -2507,9 +2506,12 @@
             const enteredPassword = document.getElementById('adminPasswordInput').value;
             const errorDiv = document.getElementById('adminLoginError');
             
+            console.log('Admin login attempt - entered:', enteredPassword, 'expected:', adminState.adminPassword);
+            
             if (enteredPassword !== adminState.adminPassword) {
                 errorDiv.textContent = 'Password admin salah!';
                 errorDiv.style.display = 'block';
+                console.log('Admin login failed - password mismatch');
                 return;
             }
             
@@ -2524,6 +2526,7 @@
             updateAdminStatistics();
             
             addLog('Admin logged in successfully');
+            console.log('Admin login successful');
         }
 
         function updateQuizPassword() {
@@ -2804,6 +2807,15 @@ currentPassword: '${newPassword}',
                     console.error('Error parsing localStorage results:', e);
                 }
             }
+            
+            // Check admin and quiz passwords
+            console.log('Admin password:', adminState.adminPassword);
+            console.log('Quiz password:', quizState.currentPassword);
+            
+            // Check external config variables
+            console.log('adminConfigData:', typeof adminConfigData !== 'undefined' ? adminConfigData : 'undefined');
+            console.log('quizConfigData:', typeof quizConfigData !== 'undefined' ? quizConfigData : 'undefined');
+            console.log('quizResultsData:', typeof quizResultsData !== 'undefined' ? quizResultsData : 'undefined');
             
             console.log('=== END DEBUG ===');
         }
